@@ -1,0 +1,32 @@
+{
+  "name": "triangle/webanalyzer",
+  "description": "Triangle WebAnalyzer Component",
+  "type": "library",
+  "keywords": [
+    "localzet",
+    "Triangle",
+    "WebAnalyzer"
+  ],
+  "license": "AGPL-3.0-or-later",
+  "authors": [
+    {
+      "role": "Developer",
+      "name": "Ivan Zorin",
+      "email": "creator@localzet.com",
+      "homepage": "https://github.com/localzet"
+    }
+  ],
+  "support": {
+    "email": "support@localzet.com",
+    "source": "https://github.com/Triangle-org/WebAnalyzer"
+  },
+  "autoload": {
+    "psr-4": {
+      "Triangle\\WebAnalyzer\\": "src"
+    }
+  },
+  "require": {
+    "php": "^8.2",
+    "psr/cache": "^1.0 || ^2.0 || ^3.0"
+  }
+}
