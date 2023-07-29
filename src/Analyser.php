@@ -41,6 +41,7 @@ class Analyser
         /* Start the actual analysing steps */
 
         $this->analyseHeaders()
+            ->analyseLocation()
             ->deriveInformation()
             ->applyCorrections()
             ->detectCamouflage()
@@ -61,5 +62,7 @@ class Analyser
         $this->data->location->country_code = $record['country']['iso_code'] ?? null;
         $this->data->location->timezone = $record['location']['time_zone'] ?? null;
         $this->data->location->subdivisions = $record['subdivisions'] ?? null;
+
+        return $this;
     }
 }
