@@ -1,10 +1,9 @@
 {
-  "name": "triangle/webanalyzer",
-  "description": "Triangle WebAnalyzer Component",
+  "name": "localzet/webanalyzer",
+  "description": "Localzet WebAnalyzer",
   "type": "library",
   "keywords": [
     "localzet",
-    "Triangle",
     "WebAnalyzer"
   ],
   "license": "AGPL-3.0-or-later",
@@ -28,7 +27,6 @@
   "require": {
     "php": "^8.2",
     "psr/cache": "^1.0 || ^2.0 || ^3.0",
-    "triangle/engine": "^4.0",
     "maxmind-db/reader": "^1.11"
   }
 }

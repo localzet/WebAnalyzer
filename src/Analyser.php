@@ -60,7 +60,7 @@ class Analyser
 
         if ($ip) {
             $ip = filter_var($ip, FILTER_VALIDATE_IP) ? $ip : null;
-            
+
             try {
                 $maxmind = new Reader(__DIR__ . '/../data/GeoLite2-City.mmdb');
                 $record = $maxmind->get($ip);
