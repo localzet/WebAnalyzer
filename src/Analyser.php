@@ -57,9 +57,10 @@ class Analyser
             $this->headers['remote-addr'] ??
             $this->headers['via'] ?? null;
 
-        $ip = filter_var($ip, FILTER_VALIDATE_IP) ? $ip : null;
 
         if ($ip) {
+            $ip = filter_var($ip, FILTER_VALIDATE_IP) ? $ip : null;
+            
             try {
                 $maxmind = new Reader(__DIR__ . '/../data/GeoLite2-City.mmdb');
                 $record = $maxmind->get($ip);
@@ -73,7 +74,7 @@ class Analyser
             $this->data->location->timezone = $record['location']['time_zone'] ?? null;
             $this->data->location->subdivisions = $record['subdivisions'] ?? null;
         }
-        
+
         return $this;
     }
 }
