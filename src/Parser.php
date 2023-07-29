@@ -20,11 +20,7 @@ class Parser extends Main
     public function __construct(?array $headers = null, array $options = [])
     {
         parent::__construct();
-
-        if (!$headers && function_exists('request')) {
-
-        }
-        $this->analyse($options);
+        $this->analyse($headers, $options);
     }
 
     /**
