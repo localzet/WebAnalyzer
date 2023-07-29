@@ -12,26 +12,31 @@ class Parser extends Main
     /**
      * Create a new object that contains all the detected information
      *
+     * @param array|null $headers Optional, an array with all the headers or a string with just the User-Agent header
      * @param array $options Optional, an array with configuration options
      * @throws InvalidArgumentException
      */
 
-    public function __construct(array $options = [])
+    public function __construct(?array $headers = null, array $options = [])
     {
         parent::__construct();
+
+        if (!$headers && function_exists('request')) {
+
+        }
         $this->analyse($options);
     }
 
     /**
      * Analyse the provided headers or User-Agent string
      *
+     * @param array|null $headers An array with all the headers or a string with just the User-Agent header
+     * @param array $options
      * @throws InvalidArgumentException
      */
 
-    public function analyse($options = []): void
+    public function analyse(?array $headers = null, array $options = []): void
     {
-        $headers = request()->header();
-
         if ($this->analyseWithCache($headers, $options)) {
             return;
         }
