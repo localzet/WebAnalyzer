@@ -25,6 +25,11 @@ class Main
     public $device;
 
     /**
+     * @var \Triangle\WebAnalyzer\Model\Location $location Information about the location
+     */
+    public $location;
+
+    /**
      * @var boolean $camouflage Is the browser camouflaged as another browser
      */
     public $camouflage = false;
@@ -45,6 +50,7 @@ class Main
         $this->engine = new Engine();
         $this->os = new Os();
         $this->device = new Device();
+        $this->location = new Location();
     }
 
 
@@ -340,7 +346,8 @@ class Main
             'browser' => $this->browser->toArray(),
             'engine' => $this->engine->toArray(),
             'os' => $this->os->toArray(),
-            'device' => $this->device->toArray()
+            'device' => $this->device->toArray(),
+            'location' => $this->location->toArray(),
         ];
 
         if (empty($result['browser'])) {
@@ -357,6 +364,10 @@ class Main
 
         if (empty($result['device'])) {
             unset($result['device']);
+        }
+
+        if (empty($result['location'])) {
+            unset($result['location']);
         }
 
         if ($this->camouflage) {

@@ -2,6 +2,7 @@
 
 namespace Triangle\WebAnalyzer;
 
+use Psr\Cache\InvalidArgumentException;
 use Triangle\WebAnalyzer\Model\Main;
 
 class Parser extends Main
@@ -11,47 +12,31 @@ class Parser extends Main
     /**
      * Create a new object that contains all the detected information
      *
-     * @param array|string $headers Optional, an array with all of the headers or a string with just the User-Agent header
      * @param array $options Optional, an array with configuration options
+     * @throws InvalidArgumentException
      */
 
-    public function __construct($headers = null, $options = [])
+    public function __construct(array $options = [])
     {
         parent::__construct();
-
-        if (!is_null($headers)) {
-            $this->analyse($headers, $options);
-        }
+        $this->analyse($options);
     }
 
     /**
      * Analyse the provided headers or User-Agent string
      *
-     * @param array|string $headers An array with all of the headers or a string with just the User-Agent header
+     * @throws InvalidArgumentException
      */
 
-    public function analyse($headers, $options = [])
+    public function analyse($options = []): void
     {
-        $o = $options;
+        $headers = request()->header();
 
-        if (is_string($headers)) {
-            $h = ['User-Agent' => $headers];
-        } else {
-            if (isset($headers['headers'])) {
-                $h = $headers['headers'];
-
-                unset($headers['headers']);
-                $o = array_merge($headers, $options);
-            } else {
-                $h = $headers;
-            }
-        }
-
-        if ($this->analyseWithCache($h, $o)) {
+        if ($this->analyseWithCache($headers, $options)) {
             return;
         }
 
-        $analyser = new Analyser($h, $o);
+        $analyser = new Analyser($headers, $options);
         $analyser->setdata($this);
         $analyser->analyse();
     }
