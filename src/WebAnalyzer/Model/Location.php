@@ -28,10 +28,27 @@ namespace localzet\WebAnalyzer\Model;
 class Location
 {
     public ?string $city = null;
+
+    public ?float $latitude = null;
+    public ?float $longitude = null;
+
+    public ?string $timezone = null;
+    public ?string $subdivision = null;
+    public ?array $subdivisions = null;
+
+    public ?array $city_traits = null;
+
+    public ?string $continent = null;
+    public ?string $continent_code = null;
+
     public ?string $country = null;
     public ?string $country_code = null;
-    public ?string $timezone = null;
-    public ?array $subdivisions = null;
+
+    public ?array $country_traits = null;
+
+    public ?int $asn = null;
+    public ?string $aso = null;
+    public ?string $network = null;
 
     /**
      * Get an array of all defined properties
@@ -45,10 +62,27 @@ class Location
     {
         return [
             'city' => $this->city,
+
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+
+            'timezone' => $this->timezone,
+            'subdivision' => $this->subdivision,
+            'subdivisions' => $this->subdivisions,
+
+            'city_traits' => $this->city_traits,
+
+            'continent' => $this->continent,
+            'continent_code' => $this->continent_code,
+
             'country' => $this->country,
             'country_code' => $this->country_code,
-            'timezone' => $this->timezone,
-            'subdivisions' => $this->subdivisions,
+
+            'country_traits' => $this->country_traits,
+
+            'asn' => $this->asn,
+            'aso' => $this->aso,
+            'network' => $this->network,
         ];
     }
 }

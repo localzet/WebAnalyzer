@@ -26,12 +26,10 @@
 namespace localzet\WebAnalyzer;
 
 use localzet\WebAnalyzer\Model\Main;
-use MaxMind\Db\Reader;
-use Throwable;
 
 class Analyser
 {
-    use Analyser\Header, Analyser\Derive, Analyser\Corrections, Analyser\Camouflage;
+    use Analyser\Header, Analyser\Location, Analyser\Derive, Analyser\Corrections, Analyser\Camouflage;
 
     private $data;
 
@@ -69,35 +67,5 @@ class Analyser
             ->applyCorrections()
             ->detectCamouflage()
             ->deriveDeviceSubType();
-    }
-
-    public function analyseLocation(): static
-    {
-        $ip = $this->headers['x-real-ip'] ??
-            $this->headers['x-forwarded-for'] ??
-            $this->headers['client-ip'] ??
-            $this->headers['x-client-ip'] ??
-            $this->headers['remote-addr'] ??
-            $this->headers['via'] ?? null;
-
-
-        if ($ip) {
-            $ip = filter_var($ip, FILTER_VALIDATE_IP) ? $ip : null;
-
-            try {
-                $maxmind = new Reader(__DIR__ . '/../data/GeoLite2-City.mmdb');
-                $record = $maxmind->get($ip);
-            } catch (Throwable) {
-                /* :) */
-            }
-
-            $this->data->location->city = $record['city']['names']['ru'] ?? $record['city']['names']['en'] ?? null;
-            $this->data->location->country = $record['country']['names']['ru'] ?? $record['country']['names']['en'] ?? null;
-            $this->data->location->country_code = $record['country']['iso_code'] ?? null;
-            $this->data->location->timezone = $record['location']['time_zone'] ?? null;
-            $this->data->location->subdivisions = $record['subdivisions'] ?? null;
-        }
-
-        return $this;
     }
 }
