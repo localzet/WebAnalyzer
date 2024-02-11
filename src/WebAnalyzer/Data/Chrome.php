@@ -32,7 +32,7 @@ class Chrome
 
     public static function getChannel($platform, $version)
     {
-        require_once __DIR__ . '/../../data/browsers-chrome.php';
+        require_once __DIR__ . '/../../../data/browsers-chrome.php';
 
         $version = implode('.', array_slice(explode('.', $version), 0, 3));
 

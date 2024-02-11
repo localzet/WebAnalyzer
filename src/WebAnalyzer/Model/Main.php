@@ -28,27 +28,27 @@ namespace localzet\WebAnalyzer\Model;
 class Main
 {
     /**
-     * @var \localzet\WebAnalyzer\Model\Browser $browser Information about the browser
+     * @var Browser $browser Information about the browser
      */
     public $browser;
 
     /**
-     * @var \localzet\WebAnalyzer\Model\Engine $engine Information about the rendering engine
+     * @var Engine $engine Information about the rendering engine
      */
     public $engine;
 
     /**
-     * @var \localzet\WebAnalyzer\Model\Os $os Information about the operating system
+     * @var Os $os Information about the operating system
      */
     public $os;
 
     /**
-     * @var \localzet\WebAnalyzer\Model\Device $device Information about the device
+     * @var Device $device Information about the device
      */
     public $device;
 
     /**
-     * @var \localzet\WebAnalyzer\Model\Location $location Information about the location
+     * @var Location $location Information about the location
      */
     public $location;
 

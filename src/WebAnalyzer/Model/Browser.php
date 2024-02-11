@@ -30,8 +30,8 @@ use localzet\WebAnalyzer\Model\Primitive\NameVersion;
 class Browser extends NameVersion
 {
     /**
-     * @var \localzet\WebAnalyzer\Model\Using $using Information about web views the browser is using
-     * @var \localzet\WebAnalyzer\Model\Family $family To which browser family does this browser belong
+     * @var Using $using Information about web views the browser is using
+     * @var Family $family To which browser family does this browser belong
      */
     public $using;
     public $family;

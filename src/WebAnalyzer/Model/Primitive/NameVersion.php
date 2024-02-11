@@ -43,7 +43,7 @@ class NameVersion extends Base
     public $alias;
 
     /**
-     * @var \localzet\WebAnalyzer\Model\Version $version Version information
+     * @var Version $version Version information
      */
     public $version;
 

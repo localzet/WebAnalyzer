@@ -33,7 +33,7 @@ class BuildIds
 
     public static function identify($id)
     {
-        require_once __DIR__ . '/../../data/build-android.php';
+        require_once __DIR__ . '/../../../data/build-android.php';
 
         if (isset(BuildIds::$ANDROID_BUILDS[$id])) {
             if (is_array(BuildIds::$ANDROID_BUILDS[$id])) {

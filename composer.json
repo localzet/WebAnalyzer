@@ -1,10 +1,19 @@
 {
   "name": "localzet/webanalyzer",
-  "description": "Localzet WebAnalyzer",
+  "description": "Localzet WebAnalyzer is a web analysis tool that analyzes website visitors, obtaining information about their device, operating system, browser, etc. It is developed by Localzet and uses modern technologies and standards to provide detailed and accurate information.",
   "type": "library",
   "keywords": [
+    "web analysis",
+    "visitor analysis",
+    "device",
+    "operating system",
+    "browser",
+    "PHP",
+    "library",
     "localzet",
-    "WebAnalyzer"
+    "AGPL",
+    "psr/cache",
+    "maxmind-db/reader"
   ],
   "license": "AGPL-3.0-or-later",
   "authors": [

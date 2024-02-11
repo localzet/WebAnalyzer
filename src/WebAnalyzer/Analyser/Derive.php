@@ -241,7 +241,7 @@ trait Derive
             $this->data->os->name = 'FireOS';
             $this->data->os->family = new Family(['name' => 'Android']);
 
-            if (isset($this->data->os->version) && isset($this->data->os->version->value)) {
+            if (isset($this->data->os->version->value)) {
                 switch ($this->data->os->version->value) {
                     case '2.3.3':
                     case '2.3.4':
