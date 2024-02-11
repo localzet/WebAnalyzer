@@ -69,7 +69,7 @@ class NameVersion extends Base
      * @param string $subject The string the regular expression is matched with
      * @param array|null $defaults An optional array of properties to set together with the value
      *
-     * @return string
+     * @return void
      */
 
     public function identifyVersion($pattern, $subject, $defaults = [])
