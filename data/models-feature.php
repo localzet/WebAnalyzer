@@ -1,8 +1,8 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
-use Triangle\WebAnalyzer\Constants\DeviceType;
+use localzet\WebAnalyzer\Constants\DeviceType;
 
 DeviceModels::$FEATURE_MODELS = [
     'Amstrad Gamma' => ['Amstrad', 'E-m@iler Plus', DeviceType::DESKTOP],

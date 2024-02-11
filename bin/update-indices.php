@@ -3,7 +3,7 @@
 include_once __DIR__ . '/bootstrap.php';
 
 use ReverseRegex\Lexer;
-use Triangle\WebAnalyzer\Data\DeviceModels;
+use localzet\WebAnalyzer\Data\DeviceModels;
 
 $command = 'list';
 $types = [];
@@ -82,7 +82,7 @@ function command_list($type)
 
     $file = "<" . "?php\n";
     $file .= "\n";
-    $file .= "namespace Triangle\\WebAnalyzer\\Data;\n";
+    $file .= "namespace localzet\\WebAnalyzer\\Data;\n";
     $file .= "\n";
     $file .= "DeviceModels::\$" . strtoupper($type) . "_INDEX = " . var_export($index, true) . ";\n";
 

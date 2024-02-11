@@ -1,8 +1,8 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
-use Triangle\WebAnalyzer\Constants\DeviceType;
+use localzet\WebAnalyzer\Constants\DeviceType;
 
 DeviceModels::$WM_MODELS = [
     'DX900' => ['Acer', 'Tempo DX900'],

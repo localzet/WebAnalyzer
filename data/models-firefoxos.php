@@ -1,6 +1,6 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
 DeviceModels::$FIREFOXOS_MODELS = [
     'ALCATEL ONE TOUCH FIRE' => ['Alcatel', 'One Touch Fire'],

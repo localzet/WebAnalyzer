@@ -1,6 +1,6 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
 DeviceModels::$ASHA_MODELS = [
     'Asha230SingleSIM' => ['Nokia', 'Asha 230'],

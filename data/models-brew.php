@@ -1,6 +1,6 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
 DeviceModels::$BREW_MODELS = [
     'Coolpad D508' => ['Coolpad', 'D508'],

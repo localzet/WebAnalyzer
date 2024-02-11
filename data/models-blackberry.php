@@ -1,6 +1,6 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
 DeviceModels::$BLACKBERRY_MODELS = [
     '9000' => 'Bold',

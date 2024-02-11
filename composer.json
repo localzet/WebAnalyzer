@@ -17,11 +17,12 @@
   ],
   "support": {
     "email": "support@localzet.com",
-    "source": "https://github.com/Triangle-org/WebAnalyzer"
+    "issues": "https://github.com/localzet/WebAnalyzer/issues",
+    "source": "https://github.com/localzet/WebAnalyzer"
   },
   "autoload": {
     "psr-4": {
-      "Triangle\\WebAnalyzer\\": "src"
+      "localzet\\": "src"
     }
   },
   "require": {

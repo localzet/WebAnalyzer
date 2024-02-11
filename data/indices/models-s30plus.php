@@ -1,6 +1,6 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
 DeviceModels::$S30PLUS_INDEX = array(
     '@21' =>

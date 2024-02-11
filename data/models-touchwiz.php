@@ -1,6 +1,6 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
 DeviceModels::$TOUCHWIZ_MODELS = [
     'GT-B5310!' => ['Samsung', 'Corby Pro'],

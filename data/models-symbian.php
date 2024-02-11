@@ -1,8 +1,8 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
-use Triangle\WebAnalyzer\Constants\Flag;
+use localzet\WebAnalyzer\Constants\Flag;
 
 DeviceModels::$SYMBIAN_MODELS = [
     'BenQ P30' => ['BenQ', 'P30', 'flag' => Flag::UIQ],

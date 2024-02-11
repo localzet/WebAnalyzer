@@ -2,7 +2,7 @@
 
 include_once __DIR__ . '/bootstrap.php';
 
-use Triangle\WebAnalyzer\Data\Applications;
+use localzet\WebAnalyzer\Data\Applications;
 
 $command = 'list';
 $types = [];
@@ -63,7 +63,7 @@ function command_list($type)
 
         $file = "<" . "?php\n";
         $file .= "\n";
-        $file .= "namespace Triangle\\WebAnalyzer\\Data;\n";
+        $file .= "namespace localzet\\WebAnalyzer\\Data;\n";
         $file .= "\n";
         $file .= "Applications::\$BOTS_REGEX = '" . $regex . "';\n";
 
@@ -86,7 +86,7 @@ function command_list($type)
 
         $file = "<" . "?php\n";
         $file .= "\n";
-        $file .= "namespace Triangle\\WebAnalyzer\\Data;\n";
+        $file .= "namespace localzet\\WebAnalyzer\\Data;\n";
         $file .= "\n";
         $file .= "Applications::\$BROWSERS_REGEX = '" . $regex . "';\n";
 
@@ -109,7 +109,7 @@ function command_list($type)
 
         $file = "<" . "?php\n";
         $file .= "\n";
-        $file .= "namespace Triangle\\WebAnalyzer\\Data;\n";
+        $file .= "namespace localzet\\WebAnalyzer\\Data;\n";
         $file .= "\n";
         $file .= "Applications::\$OTHERS_REGEX = '" . $regex . "';\n";
 

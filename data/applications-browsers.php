@@ -1,8 +1,8 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
-use Triangle\WebAnalyzer\Constants;
+use localzet\WebAnalyzer\Constants;
 
 Applications::$BROWSERS = [
 

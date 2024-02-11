@@ -1,6 +1,6 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
 CFNetwork::$OSX = [
     '1.1' => ['value' => '10.2'],

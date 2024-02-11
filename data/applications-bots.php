@@ -1,6 +1,6 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
 Applications::$BOTS = [
     ['name' => '80legs', 'id' => '008', 'regexp' => '/(?:^|\s)008\/([0-9.]*)/u'],

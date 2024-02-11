@@ -1,6 +1,6 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
 Manufacturers::$GENERIC = [
     'LG Electronics' => 'LG',

@@ -1,6 +1,6 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
 Chrome::$DESKTOP = [
     '0.2.149' => 'beta',

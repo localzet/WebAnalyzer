@@ -32,25 +32,25 @@ sort($stable['mobile']);
 
 
 foreach ($stable['desktop'] as $i => $version) {
-    if (!isset(Triangle\WebAnalyzer\Data\Chrome::$DESKTOP[$version])) {
-        Triangle\WebAnalyzer\Data\Chrome::$DESKTOP[$version] = 'stable';
+    if (!isset(localzet\WebAnalyzer\Data\Chrome::$DESKTOP[$version])) {
+        localzet\WebAnalyzer\Data\Chrome::$DESKTOP[$version] = 'stable';
     }
 }
 
 foreach ($stable['mobile'] as $i => $version) {
-    if (!isset(Triangle\WebAnalyzer\Data\Chrome::$MOBILE[$version])) {
-        Triangle\WebAnalyzer\Data\Chrome::$MOBILE[$version] = 'stable';
+    if (!isset(localzet\WebAnalyzer\Data\Chrome::$MOBILE[$version])) {
+        localzet\WebAnalyzer\Data\Chrome::$MOBILE[$version] = 'stable';
     }
 }
 
 
 $result = "<?php\n\n";
-$result .= "namespace Triangle\WebAnalyzer\Data;\n\n";
+$result .= "namespace localzet\WebAnalyzer\Data;\n\n";
 $result .= "Chrome::\$DESKTOP = [\n";
-foreach (Triangle\WebAnalyzer\Data\Chrome::$DESKTOP as $version => $channel) $result .= "    '{$version}' => '{$channel}',\n";
+foreach (localzet\WebAnalyzer\Data\Chrome::$DESKTOP as $version => $channel) $result .= "    '{$version}' => '{$channel}',\n";
 $result .= "];\n\n";
 $result .= "Chrome::\$MOBILE = [\n";
-foreach (Triangle\WebAnalyzer\Data\Chrome::$MOBILE as $version => $channel) $result .= "    '{$version}' => '{$channel}',\n";
+foreach (localzet\WebAnalyzer\Data\Chrome::$MOBILE as $version => $channel) $result .= "    '{$version}' => '{$channel}',\n";
 $result .= "];\n";
 
 

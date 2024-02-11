@@ -4,8 +4,8 @@ include_once __DIR__ . '/bootstrap.php';
 
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Report\Clover;
-use Triangle\WebAnalyzer\Testrunner;
-use Triangle\WebAnalyzer\Tests;
+use localzet\WebAnalyzer\Testrunner;
+use localzet\WebAnalyzer\Tests;
 
 set_error_handler(function ($errno, $errstr, $errfile, $errline) {
     // error was suppressed with the @-operator

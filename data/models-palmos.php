@@ -1,9 +1,9 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
-use Triangle\WebAnalyzer\Constants\DeviceSubType;
-use Triangle\WebAnalyzer\Constants\DeviceType;
+use localzet\WebAnalyzer\Constants\DeviceSubType;
+use localzet\WebAnalyzer\Constants\DeviceType;
 
 DeviceModels::$PALMOS_MODELS = [
     'Palm-D061' => ['Palm', 'Centro 685', DeviceType::MOBILE],

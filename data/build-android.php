@@ -1,6 +1,6 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
 BuildIds::$ANDROID_BUILDS = [
     'CUPCAKE' => '1.5',

@@ -1,6 +1,6 @@
 <?php
 
-namespace Triangle\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Data;
 
 DeviceModels::$BADA_MODELS = [
     'GT- ?S52(50|53)!' => ['Samsung', 'Wave 525'],
