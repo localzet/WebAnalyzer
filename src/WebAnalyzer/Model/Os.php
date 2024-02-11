@@ -46,7 +46,6 @@ class Os extends NameVersion
      *
      * @param array|null $properties An optional array of properties to set after setting it to the default values
      *
-     * @internal
      */
 
     public function reset($properties = null)
@@ -126,7 +125,6 @@ class Os extends NameVersion
      * Get an array of all defined properties
      *
      * @return array
-     * @internal
      *
      */
 

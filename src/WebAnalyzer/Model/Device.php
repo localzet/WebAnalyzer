@@ -71,7 +71,6 @@ class Device extends Base
      *
      * @param array|null $properties An optional array of properties to set after setting it to the default values
      *
-     * @internal
      */
 
     public function reset($properties = null)
@@ -237,7 +236,6 @@ class Device extends Base
      * Get an array of all defined properties
      *
      * @return array
-     * @internal
      *
      */
 

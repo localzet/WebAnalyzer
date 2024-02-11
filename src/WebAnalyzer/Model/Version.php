@@ -166,7 +166,6 @@ class Version extends Base
      * @param int $count The maximum precision
      *
      * @return float
-     * @internal
      *
      */
 
@@ -289,7 +288,6 @@ class Version extends Base
      * Get an array of all defined properties
      *
      * @return array
-     * @internal
      *
      */
 

@@ -25,9 +25,6 @@
 
 namespace localzet\WebAnalyzer\Model\Primitive;
 
-/**
- * @internal
- */
 class Base
 {
     /**
@@ -48,7 +45,6 @@ class Base
      *
      * @param array $properties An array, the key of an element determines the name of the property
      *
-     * @internal
      */
     public function set($properties)
     {
@@ -62,8 +58,6 @@ class Base
      * Get a string containing a JavaScript representation of the object
      *
      * @return string
-     * @internal
-     *
      */
 
     public function toJavaScript()

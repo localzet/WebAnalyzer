@@ -27,9 +27,6 @@ namespace localzet\WebAnalyzer\Model\Primitive;
 
 use localzet\WebAnalyzer\Model\Version;
 
-/**
- * @internal
- */
 class NameVersion extends Base
 {
     /**
@@ -51,8 +48,6 @@ class NameVersion extends Base
      * Set the properties to the default values
      *
      * @param array|null $properties An optional array of properties to set after setting it to the default values
-     *
-     * @internal
      */
 
     public function reset($properties = null)

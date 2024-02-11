@@ -58,7 +58,6 @@ trait Cache
      * Apply cached data to the main Parser object
      *
      * @param array $data An array with a key for every property it needs to apply
-     * @internal
      *
      */
 
@@ -76,7 +75,6 @@ trait Cache
      * Retrieve the data that can be cached from the main Parser object
      *
      * @return  array    An array with a key for every property that will be cached
-     * @internal
      *
      */
 
@@ -100,7 +98,6 @@ trait Cache
      * @param array $options
      * @return  boolean         did we actually retrieve or analyse results
      * @throws InvalidArgumentException
-     * @internal
      */
 
     private function analyseWithCache($headers, $options = [])

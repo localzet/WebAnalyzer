@@ -86,7 +86,6 @@ class Main
      * @param mixed    Optional, the value, can be an integer, float or string with a version number
      *
      * @return boolean
-     * @internal
      *
      */
 
@@ -262,7 +261,6 @@ class Main
      * @param string $s The string that will be prefixed
      *
      * @return string
-     * @internal
      *
      */
 

@@ -33,7 +33,6 @@ class Using extends NameVersion
      * Get an array of all defined properties
      *
      * @return array
-     * @internal
      *
      */
 
