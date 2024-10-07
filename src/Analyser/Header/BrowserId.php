@@ -37,7 +37,7 @@ trait BrowserId
         if ($header == 'XMLHttpRequest') {
             return;
         }
-        
+
         /* The X-Requested-With header is send by the WebView, so our browser name is Chrome it is probably the Chromium WebView which is sometimes misidentified. */
 
         if (isset($this->browser->name) && $this->browser->name == 'Chrome') {
