@@ -28,7 +28,7 @@
 namespace localzet\WebAnalyzer\Data;
  use localzet\WebAnalyzer\Constants\DeviceType;
 
-DeviceProfiles::$PROFILES = [
+ DeviceProfiles::$PROFILES = [
     'http://go.acer.com/?id=17884'                                                                        => [ 'Acer', 'All-in-One DA223HQL', 'Android',  ],
     'http://support.acer.com/uaprofile/Acer_E110_profile.xml'                                             => [ 'Acer', 'beTouch E110', 'Android', DeviceType::MOBILE ],
     'http://support.acer.com/UAprofile/Acer_E130_profile_no_3rd_drm_no_java.xml'                          => [ 'Acer', 'beTouch E130', 'Android', DeviceType::MOBILE ],

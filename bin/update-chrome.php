@@ -55,14 +55,14 @@ sort($stable['mobile']);
 
 
 foreach ($stable['desktop'] as $i => $version) {
-    if (!isset(localzet\WebAnalyzer\Data\Chrome::$DESKTOP[$version])) {
-        localzet\WebAnalyzer\Data\Chrome::$DESKTOP[$version] = 'stable';
+    if (!isset(\localzet\WebAnalyzer\Data\Chrome::$DESKTOP[$version])) {
+        \localzet\WebAnalyzer\Data\Chrome::$DESKTOP[$version] = 'stable';
     }
 }
 
 foreach ($stable['mobile'] as $i => $version) {
-    if (!isset(localzet\WebAnalyzer\Data\Chrome::$MOBILE[$version])) {
-        localzet\WebAnalyzer\Data\Chrome::$MOBILE[$version] = 'stable';
+    if (!isset(\localzet\WebAnalyzer\Data\Chrome::$MOBILE[$version])) {
+        \localzet\WebAnalyzer\Data\Chrome::$MOBILE[$version] = 'stable';
     }
 }
 
@@ -100,11 +100,11 @@ $result = <<<PHP_INS
  PHP_INS;
 
 $result .= "Chrome::\$DESKTOP = [\n";
-foreach (localzet\WebAnalyzer\Data\Chrome::$DESKTOP as $version => $channel) $result .= "    '{$version}' => '{$channel}',\n";
+foreach (\localzet\WebAnalyzer\Data\Chrome::$DESKTOP as $version => $channel) $result .= "    '{$version}' => '{$channel}',\n";
 $result .= "];\n\n";
 
 $result .= "Chrome::\$MOBILE = [\n";
-foreach (localzet\WebAnalyzer\Data\Chrome::$MOBILE as $version => $channel) $result .= "    '{$version}' => '{$channel}',\n";
+foreach (\localzet\WebAnalyzer\Data\Chrome::$MOBILE as $version => $channel) $result .= "    '{$version}' => '{$channel}',\n";
 $result .= "];\n";
 
 
