@@ -118,6 +118,7 @@ class WebAnalyzer
                 $this
                     ->analyseHeaders()
                     ->analyseLocation()
+                    ->analyseNetwork()
                     ->deriveInformation()
                     ->applyCorrections()
                     ->detectCamouflage()
