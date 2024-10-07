@@ -32,7 +32,7 @@ class CFNetwork
 
     public static function getVersion($platform, $version)
     {
-        require_once __DIR__ . '/../../../data/os-cfnetwork.php';
+        require_once __DIR__ . '/../../data/os-cfnetwork.php';
 
         switch ($platform) {
             case 'osx':

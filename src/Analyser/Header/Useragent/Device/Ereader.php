@@ -50,30 +50,30 @@ trait Ereader
     private function detectKindle($ua)
     {
         if (preg_match('/Kindle/u', $ua) && !preg_match('/Fire/u', $ua)) {
-            $this->data->os->reset();
-            $this->data->device->setIdentification([
+            $this->os->reset();
+            $this->device->setIdentification([
                 'manufacturer' => 'Amazon',
                 'series' => 'Kindle',
                 'type' => Constants\DeviceType::EREADER
             ]);
 
             if (preg_match('/Kindle SkipStone/u', $ua)) {
-                $this->data->device->model = 'Kindle Touch or later';
+                $this->device->model = 'Kindle Touch or later';
             } elseif (preg_match('/Kindle\/3.0\+/u', $ua)) {
-                $this->data->device->model = 'Kindle 3 or later';
+                $this->device->model = 'Kindle 3 or later';
             } elseif (preg_match('/Kindle\/3.0/u', $ua)) {
-                $this->data->device->model = 'Kindle 3';
+                $this->device->model = 'Kindle 3';
             } elseif (preg_match('/Kindle\/2.5/u', $ua)) {
-                $this->data->device->model = 'Kindle 2';
+                $this->device->model = 'Kindle 2';
             } elseif (preg_match('/Kindle\/2.0/u', $ua)) {
-                $this->data->device->model = 'Kindle 2';
+                $this->device->model = 'Kindle 2';
             } elseif (preg_match('/Kindle\/1.0/u', $ua)) {
-                $this->data->device->model = 'Kindle 1';
+                $this->device->model = 'Kindle 1';
             }
 
-            if (!empty($this->data->device->model)) {
-                $this->data->device->generic = false;
-                $this->data->device->series = null;
+            if (!empty($this->device->model)) {
+                $this->device->generic = false;
+                $this->device->series = null;
             }
         }
     }
@@ -84,8 +84,8 @@ trait Ereader
     private function detectNook($ua)
     {
         if (preg_match('/nook browser/u', $ua)) {
-            $this->data->os->reset(['name' => 'Android']);
-            $this->data->device->setIdentification([
+            $this->os->reset(['name' => 'Android']);
+            $this->device->setIdentification([
                 'manufacturer' => 'Barnes & Noble',
                 'series' => 'NOOK',
                 'type' => Constants\DeviceType::EREADER
@@ -99,8 +99,8 @@ trait Ereader
     private function detectBookeen($ua)
     {
         if (preg_match('/bookeen\/cybook/u', $ua)) {
-            $this->data->os->reset();
-            $this->data->device->setIdentification([
+            $this->os->reset();
+            $this->device->setIdentification([
                 'manufacturer' => 'Bookeen',
                 'series' => 'Cybook',
                 'type' => Constants\DeviceType::EREADER
@@ -114,8 +114,8 @@ trait Ereader
     private function detectKobo($ua)
     {
         if (preg_match('/Kobo (eReader|Touch)/u', $ua, $match)) {
-            $this->data->os->reset();
-            $this->data->device->setIdentification([
+            $this->os->reset();
+            $this->device->setIdentification([
                 'manufacturer' => 'Kobo',
                 'series' => 'eReader',
                 'type' => Constants\DeviceType::EREADER
@@ -146,8 +146,8 @@ trait Ereader
                     break;
             }
 
-            $this->data->os->reset();
-            $this->data->device->setIdentification([
+            $this->os->reset();
+            $this->device->setIdentification([
                 'manufacturer' => 'Sony',
                 'model' => $model,
                 'series' => 'Reader',
@@ -206,8 +206,8 @@ trait Ereader
                     break;
             }
 
-            $this->data->os->reset();
-            $this->data->device->setIdentification([
+            $this->os->reset();
+            $this->device->setIdentification([
                 'manufacturer' => 'PocketBook',
                 'model' => $model,
                 'type' => Constants\DeviceType::EREADER
@@ -221,17 +221,17 @@ trait Ereader
     private function detectIriver($ua)
     {
         if (preg_match('/Iriver ;/u', $ua)) {
-            $this->data->os->reset();
-            $this->data->device->setIdentification([
+            $this->os->reset();
+            $this->device->setIdentification([
                 'manufacturer' => 'iRiver',
                 'series' => 'Story',
                 'type' => Constants\DeviceType::EREADER
             ]);
 
             if (preg_match('/EB07/u', $ua)) {
-                $this->data->device->model = 'Story HD EB07';
-                $this->data->device->series = null;
-                $this->data->device->generic = false;
+                $this->device->model = 'Story HD EB07';
+                $this->device->series = null;
+                $this->device->generic = false;
             }
         }
     }

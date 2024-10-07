@@ -28,34 +28,32 @@ namespace localzet\WebAnalyzer\Analyser\Header;
 use localzet\WebAnalyzer;
 use localzet\WebAnalyzer\Constants;
 
-class UCBrowserOld
+trait UCBrowserOld
 {
-    public function __construct($header, &$data)
+    public function analyseOldUCUserAgent($header)
     {
-        $this->data =& $data;
+        if ($this->device->type == Constants\DeviceType::DESKTOP) {
+            $this->device->type = Constants\DeviceType::MOBILE;
 
-        if ($this->data->device->type == Constants\DeviceType::DESKTOP) {
-            $this->data->device->type = Constants\DeviceType::MOBILE;
-
-            $this->data->os->reset();
+            $this->os->reset();
         }
 
-        if (!isset($this->data->browser->name) || $this->data->browser->name != 'UC Browser') {
-            $this->data->browser->name = 'UC Browser';
-            $this->data->browser->version = null;
+        if (!isset($this->browser->name) || $this->browser->name != 'UC Browser') {
+            $this->browser->name = 'UC Browser';
+            $this->browser->version = null;
         }
 
-        $this->data->browser->mode = 'proxy';
-        $this->data->engine->reset(['name' => 'Gecko']);
+        $this->browser->mode = 'proxy';
+        $this->engine->reset(['name' => 'Gecko']);
 
-        $extra = new WebAnalyzer(['headers' => ['User-Agent' => $header]]);
+        $extra = new WebAnalyzer(['User-Agent' => $header]);
 
         if ($extra->device->type != Constants\DeviceType::DESKTOP) {
-            if ($extra->os->getName() !== '' && ($this->data->os->getName() === '' || $extra->os->getVersion() !== '')) {
-                $this->data->os = $extra->os;
+            if ($extra->os->getName() !== '' && ($this->os->getName() === '' || $extra->os->getVersion() !== '')) {
+                $this->os = $extra->os;
             }
             if ($extra->device->identified) {
-                $this->data->device = $extra->device;
+                $this->device = $extra->device;
             }
         }
     }

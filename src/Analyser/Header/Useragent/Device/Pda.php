@@ -56,17 +56,17 @@ trait Pda
     private function detectCasio($ua)
     {
         if (preg_match('/Product\=CASIO\/([^\);]+)[\);]/ui', $ua, $match)) {
-            $this->data->device->manufacturer = 'Casio';
-            $this->data->device->identified |= Constants\Id::MATCH_UA;
-            $this->data->device->type = Constants\DeviceType::PDA;
+            $this->device->manufacturer = 'Casio';
+            $this->device->identified |= Constants\Id::MATCH_UA;
+            $this->device->type = Constants\DeviceType::PDA;
 
             if ($match[1] == 'CASSIOPEIA BE') {
-                $this->data->device->model = 'Cassiopeia';
+                $this->device->model = 'Cassiopeia';
             }
 
             if ($match[1] == 'PPP101') {
-                $this->data->device->model = 'Pocket PostPet';
-                $this->data->device->carrier = 'DoCoMo';
+                $this->device->model = 'Pocket PostPet';
+                $this->device->carrier = 'DoCoMo';
             }
         }
     }
@@ -77,19 +77,19 @@ trait Pda
     private function detectPalm($ua)
     {
         if (preg_match('/PalmOS/iu', $ua, $match)) {
-            $this->data->os->name = 'Palm OS';
-            $this->data->device->type = Constants\DeviceType::PDA;
+            $this->os->name = 'Palm OS';
+            $this->device->type = Constants\DeviceType::PDA;
 
             if (preg_match('/PalmOS ([0-9.]*)/iu', $ua, $match)) {
-                $this->data->os->version = new Version(['value' => $match[1]]);
+                $this->os->version = new Version(['value' => $match[1]]);
             }
 
             if (preg_match('/; ([^;)]+)\)/u', $ua, $match)) {
                 $device = Data\DeviceModels::identify('palmos', $match[1]);
 
                 if ($device->identified) {
-                    $device->identified |= $this->data->device->identified;
-                    $this->data->device = $device;
+                    $device->identified |= $this->device->identified;
+                    $this->device = $device;
                 }
             }
 
@@ -97,34 +97,34 @@ trait Pda
                 $device = Data\DeviceModels::identify('palmos', $match[1] . '-' . $match[2]);
 
                 if ($device->identified) {
-                    $device->identified |= $this->data->device->identified;
-                    $this->data->device = $device;
+                    $device->identified |= $this->device->identified;
+                    $this->device = $device;
                 }
             }
         }
 
         if (preg_match('/Palm OS ([0-9.]*)/iu', $ua, $match)) {
-            $this->data->os->name = 'Palm OS';
-            $this->data->os->version = new Version(['value' => $match[1]]);
-            $this->data->device->type = Constants\DeviceType::PDA;
+            $this->os->name = 'Palm OS';
+            $this->os->version = new Version(['value' => $match[1]]);
+            $this->device->type = Constants\DeviceType::PDA;
         }
 
         if (preg_match('/PalmSource/u', $ua, $match)) {
-            $this->data->os->name = 'Palm OS';
-            $this->data->os->version = null;
-            $this->data->device->type = Constants\DeviceType::PDA;
+            $this->os->name = 'Palm OS';
+            $this->os->version = null;
+            $this->device->type = Constants\DeviceType::PDA;
 
             if (preg_match('/PalmSource\/([^;]+)/u', $ua, $match)) {
-                $this->data->device->model = $match[1];
-                $this->data->device->identified = Constants\Id::PATTERN;
+                $this->device->model = $match[1];
+                $this->device->identified = Constants\Id::PATTERN;
             }
 
-            if (isset($this->data->device->model) && $this->data->device->model) {
-                $device = Data\DeviceModels::identify('palmos', $this->data->device->model);
+            if (isset($this->device->model) && $this->device->model) {
+                $device = Data\DeviceModels::identify('palmos', $this->device->model);
 
                 if ($device->identified) {
-                    $device->identified |= $this->data->device->identified;
-                    $this->data->device = $device;
+                    $device->identified |= $this->device->identified;
+                    $this->device = $device;
                 }
             }
         }
@@ -132,15 +132,15 @@ trait Pda
         /* Some model markers */
 
         if (preg_match('/PalmPilot Pro/ui', $ua, $match)) {
-            $this->data->device->manufacturer = 'Palm';
-            $this->data->device->model = 'Pilot Professional';
-            $this->data->device->identified |= Constants\Id::MATCH_UA;
+            $this->device->manufacturer = 'Palm';
+            $this->device->model = 'Pilot Professional';
+            $this->device->identified |= Constants\Id::MATCH_UA;
         }
 
         if (preg_match('/pdQbrowser/ui', $ua, $match)) {
-            $this->data->device->manufacturer = 'Kyocera';
-            $this->data->device->model = 'QCP-6035';
-            $this->data->device->identified |= Constants\Id::MATCH_UA;
+            $this->device->manufacturer = 'Kyocera';
+            $this->device->model = 'QCP-6035';
+            $this->device->identified |= Constants\Id::MATCH_UA;
         }
     }
 
@@ -150,27 +150,27 @@ trait Pda
     private function detectPsion($ua)
     {
         if (preg_match('/Psion Cpw\//iu', $ua, $match)) {
-            $this->data->browser->name = 'WAP Browser';
-            $this->data->browser->version = null;
-            $this->data->browser->type = Constants\BrowserType::BROWSER;
+            $this->browser->name = 'WAP Browser';
+            $this->browser->version = null;
+            $this->browser->type = Constants\BrowserType::BROWSER;
 
-            $this->data->os->name = 'EPOC';
-            $this->data->os->family = new Family(['name' => 'Symbian']);
+            $this->os->name = 'EPOC';
+            $this->os->family = new Family(['name' => 'Symbian']);
 
-            $this->data->device->manufacturer = 'Psion';
-            $this->data->device->identified |= Constants\Id::MATCH_UA;
-            $this->data->device->type = Constants\DeviceType::PDA;
+            $this->device->manufacturer = 'Psion';
+            $this->device->identified |= Constants\Id::MATCH_UA;
+            $this->device->type = Constants\DeviceType::PDA;
 
             if (preg_match('/\(([A-Z0-9]+)\)/u', $ua, $match)) {
                 switch ($match[1]) {
                     case 'S5':
-                        $this->data->device->model = 'Series 5mx';
+                        $this->device->model = 'Series 5mx';
                         break;
                     case 'S7':
-                        $this->data->device->model = 'Series 7';
+                        $this->device->model = 'Series 7';
                         break;
                     case 'RV':
-                        $this->data->device->model = 'Revo';
+                        $this->device->model = 'Revo';
                         break;
                 }
             }
@@ -183,15 +183,15 @@ trait Pda
     private function detectSonyMylo($ua)
     {
         if (preg_match('/SONY\/COM([0-9])/ui', $ua, $match)) {
-            $this->data->device->manufacturer = 'Sony';
-            $this->data->device->model = 'Mylo ' . $match[1];
-            $this->data->device->identified |= Constants\Id::MATCH_UA;
-            $this->data->device->type = Constants\DeviceType::PDA;
+            $this->device->manufacturer = 'Sony';
+            $this->device->model = 'Mylo ' . $match[1];
+            $this->device->identified |= Constants\Id::MATCH_UA;
+            $this->device->type = Constants\DeviceType::PDA;
 
-            $this->data->os->reset();
+            $this->os->reset();
 
             if (preg_match('/Qt embedded/ui', $ua, $match)) {
-                $this->data->os->name = 'Qtopia';
+                $this->os->name = 'Qtopia';
             }
         }
     }
@@ -202,17 +202,17 @@ trait Pda
     private function detectSonyAirboard($ua)
     {
         if (preg_match('/SONY\/airboard\/IDT-([A-Z0-9]+)/ui', $ua, $match)) {
-            $this->data->device->manufacturer = 'Sony';
-            $this->data->device->model = 'Airboard ' . $match[1];
-            $this->data->device->identified |= Constants\Id::MATCH_UA;
-            $this->data->device->type = Constants\DeviceType::PDA;
+            $this->device->manufacturer = 'Sony';
+            $this->device->model = 'Airboard ' . $match[1];
+            $this->device->identified |= Constants\Id::MATCH_UA;
+            $this->device->type = Constants\DeviceType::PDA;
         }
 
         if (preg_match('/LocationFreeTV; Airboard\/(LF-[A-Z0-9]+)/ui', $ua, $match)) {
-            $this->data->device->manufacturer = 'Sony';
-            $this->data->device->model = 'Airboard ' . $match[1];
-            $this->data->device->identified |= Constants\Id::MATCH_UA;
-            $this->data->device->type = Constants\DeviceType::PDA;
+            $this->device->manufacturer = 'Sony';
+            $this->device->model = 'Airboard ' . $match[1];
+            $this->device->identified |= Constants\Id::MATCH_UA;
+            $this->device->type = Constants\DeviceType::PDA;
         }
     }
 
@@ -222,23 +222,23 @@ trait Pda
     private function detectSharpZaurus($ua)
     {
         if (preg_match('/sharp pda browser\/([0-9\.]+)/ui', $ua, $match)) {
-            $this->data->device->manufacturer = 'Sharp';
-            $this->data->device->model = 'Zaurus';
-            $this->data->device->type = Constants\DeviceType::PDA;
+            $this->device->manufacturer = 'Sharp';
+            $this->device->model = 'Zaurus';
+            $this->device->type = Constants\DeviceType::PDA;
 
             if (preg_match('/\(([A-Z0-9\-]+)\/[0-9\.]+\)/ui', $ua, $match)) {
-                $this->data->device->model = 'Zaurus ' . $match[1];
-                $this->data->device->identified |= Constants\Id::MATCH_UA;
-                $this->data->device->generic = false;
+                $this->device->model = 'Zaurus ' . $match[1];
+                $this->device->identified |= Constants\Id::MATCH_UA;
+                $this->device->generic = false;
             }
         }
 
         if (preg_match('/\(PDA; (SL-[A-Z][0-9]+)\/[0-9\.]/ui', $ua, $match)) {
-            $this->data->device->manufacturer = 'Sharp';
-            $this->data->device->model = 'Zaurus ' . $match[1];
-            $this->data->device->type = Constants\DeviceType::PDA;
-            $this->data->device->identified |= Constants\Id::MATCH_UA;
-            $this->data->device->generic = false;
+            $this->device->manufacturer = 'Sharp';
+            $this->device->model = 'Zaurus ' . $match[1];
+            $this->device->type = Constants\DeviceType::PDA;
+            $this->device->identified |= Constants\Id::MATCH_UA;
+            $this->device->generic = false;
         }
     }
 
@@ -248,14 +248,14 @@ trait Pda
     private function detectSharpShoin($ua)
     {
         if (preg_match('/sharp wd browser\/([0-9\.]+)/ui', $ua, $match)) {
-            $this->data->device->manufacturer = 'Sharp';
-            $this->data->device->model = 'Mobile Shoin';
-            $this->data->device->type = Constants\DeviceType::PDA;
+            $this->device->manufacturer = 'Sharp';
+            $this->device->model = 'Mobile Shoin';
+            $this->device->type = Constants\DeviceType::PDA;
 
             if (preg_match('/\(([A-Z0-9\-]+)\/[0-9\.]+\)/ui', $ua, $match)) {
-                $this->data->device->model = 'Mobile Shoin ' . $match[1];
-                $this->data->device->identified |= Constants\Id::MATCH_UA;
-                $this->data->device->generic = false;
+                $this->device->model = 'Mobile Shoin ' . $match[1];
+                $this->device->identified |= Constants\Id::MATCH_UA;
+                $this->device->generic = false;
             }
         }
     }
@@ -266,11 +266,11 @@ trait Pda
     private function detectPanasonicPocketE($ua)
     {
         if (preg_match('/Product\=Panasonic\/POCKET-E/ui', $ua, $match)) {
-            $this->data->device->manufacturer = 'Panasonic';
-            $this->data->device->model = 'POCKET・E';
-            $this->data->device->type = Constants\DeviceType::PDA;
-            $this->data->device->identified |= Constants\Id::MATCH_UA;
-            $this->data->device->generic = false;
+            $this->device->manufacturer = 'Panasonic';
+            $this->device->model = 'POCKET・E';
+            $this->device->type = Constants\DeviceType::PDA;
+            $this->device->identified |= Constants\Id::MATCH_UA;
+            $this->device->generic = false;
         }
     }
 
@@ -280,16 +280,16 @@ trait Pda
     private function detectFujitsuOasys($ua)
     {
         if (preg_match('/Fujitsu; OASYS/ui', $ua, $match)) {
-            $this->data->device->manufacturer = 'Fujitsu';
-            $this->data->device->model = 'OASYS';
-            $this->data->device->type = Constants\DeviceType::PDA;
-            $this->data->device->identified |= Constants\Id::MATCH_UA;
-            $this->data->device->generic = false;
+            $this->device->manufacturer = 'Fujitsu';
+            $this->device->model = 'OASYS';
+            $this->device->type = Constants\DeviceType::PDA;
+            $this->device->identified |= Constants\Id::MATCH_UA;
+            $this->device->generic = false;
 
             if (preg_match('/eNavigator/ui', $ua, $match)) {
-                $this->data->browser->name = 'eNavigator';
-                $this->data->browser->version = null;
-                $this->data->browser->type = Constants\BrowserType::BROWSER;
+                $this->browser->name = 'eNavigator';
+                $this->browser->version = null;
+                $this->browser->type = Constants\BrowserType::BROWSER;
             }
         }
     }
@@ -300,11 +300,11 @@ trait Pda
     private function detectNttPetitWeb($ua)
     {
         if (preg_match('/Product\=NTT\/(PI-[0-9]+)/ui', $ua, $match)) {
-            $this->data->device->manufacturer = 'NTT';
-            $this->data->device->model = 'PetitWeb ' . $match[1];
-            $this->data->device->type = Constants\DeviceType::PDA;
-            $this->data->device->identified |= Constants\Id::MATCH_UA;
-            $this->data->device->generic = false;
+            $this->device->manufacturer = 'NTT';
+            $this->device->model = 'PetitWeb ' . $match[1];
+            $this->device->type = Constants\DeviceType::PDA;
+            $this->device->identified |= Constants\Id::MATCH_UA;
+            $this->device->generic = false;
         }
     }
 }

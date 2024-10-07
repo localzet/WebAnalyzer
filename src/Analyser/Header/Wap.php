@@ -28,12 +28,10 @@ namespace localzet\WebAnalyzer\Analyser\Header;
 use localzet\WebAnalyzer\Constants;
 use localzet\WebAnalyzer\Data;
 
-class Wap
+trait Wap
 {
-    public function __construct($header, &$data)
+    public function analyseWapProfile($header)
     {
-        $this->data =& $data;
-
         $header = trim($header);
 
         if ($header[0] == '"') {
@@ -44,20 +42,20 @@ class Wap
         $result = Data\DeviceProfiles::identify($header);
 
         if ($result) {
-            $this->data->device->manufacturer = $result[0];
-            $this->data->device->model = $result[1];
-            $this->data->device->identified |= Constants\Id::MATCH_PROF;
+            $this->device->manufacturer = $result[0];
+            $this->device->model = $result[1];
+            $this->device->identified |= Constants\Id::MATCH_PROF;
 
-            if (!empty($result[2]) && (!isset($this->data->os->name) || $this->data->os->name != $result[2])) {
-                $this->data->os->name = $result[2];
-                $this->data->os->version = null;
+            if (!empty($result[2]) && (!isset($this->os->name) || $this->os->name != $result[2])) {
+                $this->os->name = $result[2];
+                $this->os->version = null;
 
-                $this->data->engine->name = null;
-                $this->data->engine->version = null;
+                $this->engine->name = null;
+                $this->engine->version = null;
             }
 
             if (isset($result[3])) {
-                $this->data->device->type = $result[3];
+                $this->device->type = $result[3];
             }
         }
     }

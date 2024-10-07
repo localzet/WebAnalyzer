@@ -25,23 +25,19 @@
 
 namespace localzet\WebAnalyzer\Analyser\Header;
 
-use AllowDynamicProperties;
-
-#[AllowDynamicProperties]
-class Useragent
+trait Useragent
 {
-    use Useragent\Os, Useragent\Device, Useragent\Browser, Useragent\Application, Useragent\Using, Useragent\Engine, Useragent\Bot;
+    use Useragent\Os,
+        Useragent\Device,
+        Useragent\Browser,
+        Useragent\Application,
+        Useragent\Using,
+        Useragent\Engine,
+        Useragent\Bot;
 
-    public function __construct($header, &$data, &$options)
+    public function analyseUserAgent($header)
     {
-        $this->data =& $data;
-        $this->options =& $options;
-
-        /* Make sure we do not have a duplicate concatenated useragent string */
-
         $header = preg_replace("/^(Mozilla\/[0-9]\.[0-9].{20,})\s+Mozilla\/[0-9]\.[0-9].*$/iu", '$1', $header);
-
-        /* Detect the basic information */
 
         $this->detectOperatingSystem($header)
             ->detectDevice($header)

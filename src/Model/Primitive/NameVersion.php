@@ -131,7 +131,7 @@ class NameVersion extends Base
 
 
     /**
-     * Get the name and version in a human readable format
+     * Get the name and version in a human-readable format
      *
      * @return string
      */

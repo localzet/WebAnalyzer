@@ -36,13 +36,9 @@ class Using extends NameVersion
      *
      */
 
-    public function toArray()
+    public function toArray(): array
     {
         $result = [];
-
-        if (!empty($this->name) && empty($this->version)) {
-            return $this->name;
-        }
 
         if (!empty($this->name)) {
             $result['name'] = $this->name;

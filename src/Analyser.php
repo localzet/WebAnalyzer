@@ -25,7 +25,7 @@
 
 namespace localzet\WebAnalyzer;
 
-use localzet\WebAnalyzer\Model\Main;
+use localzet\WebAnalyzer;
 
 class Analyser
 {
@@ -56,7 +56,7 @@ class Analyser
     public function analyse()
     {
         if (!isset($this->data)) {
-            $this->data = new Main();
+            $this->data = new WebAnalyzer();
         }
 
         /* Start the actual analysing steps */

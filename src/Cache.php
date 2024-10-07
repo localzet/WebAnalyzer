@@ -25,6 +25,7 @@
 
 namespace localzet\WebAnalyzer;
 
+use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
 
@@ -96,36 +97,21 @@ trait Cache
      *
      * @param array|string $headers An array with all of the headers or a string with just the User-Agent header
      * @param array $options
-     * @return  boolean         did we actually retrieve or analyse results
+     * @return CacheItemInterface|null
      * @throws InvalidArgumentException
      */
 
-    private function analyseWithCache($headers, $options = [])
+    private function analyseWithCache($headers, $options = []): ?CacheItemInterface
     {
         if (isset($options['cache'])) {
-            if (isset($options['cacheExpires'])) {
-                $this->setCache($options['cache'], $options['cacheExpires']);
-            } else {
-                $this->setCache($options['cache']);
-            }
+            $this->cache = $options['cache'];
+            $this->expires = $options['cacheExpires'] ?? 900;
         }
 
         if ($this->cache instanceof CacheItemPoolInterface) {
-            $item = $this->cache->getItem('whichbrowser_' . md5(serialize($headers)));
-
-            if ($item->isHit()) {
-                $this->applyCachedData($item->get());
-            } else {
-                $analyser = new Analyser($headers, $options);
-                $analyser->setdata($this);
-                $analyser->analyse();
-
-                $item->set($this->retrieveCachedData());
-                $item->expiresAfter($this->expires);
-                $this->cache->save($item);
-            }
-
-            return true;
+            return $this->cache->getItem('webanalyzer_' . md5(serialize($headers)));
         }
+
+        return null;
     }
 }

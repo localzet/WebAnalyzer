@@ -27,9 +27,19 @@ namespace localzet\WebAnalyzer\Analyser\Header\Useragent;
 
 trait Device
 {
-    use Device\Appliance, Device\Cars, Device\Gps, Device\Gaming, Device\Ereader,
-        Device\Mobile, Device\Media, Device\Television, Device\Signage,
-        Device\Printer, Device\Tablet, Device\Phone, Device\Pda;
+    use Device\Appliance,
+        Device\Cars,
+        Device\Gps,
+        Device\Gaming,
+        Device\Ereader,
+        Device\Mobile,
+        Device\Media,
+        Device\Television,
+        Device\Signage,
+        Device\Printer,
+        Device\Tablet,
+        Device\Phone,
+        Device\Pda;
 
     private function &detectDevice($ua)
     {

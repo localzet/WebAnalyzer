@@ -23,20 +23,31 @@
  *              For any questions, please contact <creator@localzet.com>
  */
 
-namespace localzet\WebAnalyzer\Data;
+namespace localzet\WebAnalyzer\Analyser;
 
-class DeviceProfiles
+use GeoIp2\Database\Reader;
+use Throwable;
+
+trait Network
 {
-    public static $PROFILES = [];
-
-    public static function identify($url)
+    public function &analyseNetwork(): static
     {
-        require_once __DIR__ . '/../../data/profiles.php';
+        $ip = $this->headers['x-real-ip'] ??
+            $this->headers['x-forwarded-for'] ??
+            $this->headers['client-ip'] ??
+            $this->headers['x-client-ip'] ??
+            $this->headers['remote-addr'] ??
+            $this->headers['via'] ?? null;
 
-        if (isset(self::$PROFILES[$url])) {
-            return self::$PROFILES[$url];
+        if (filter_var($ip, FILTER_VALIDATE_IP)) {
+            try {
+                $GeoLite2_ASN = new Reader(__DIR__ . '/../../data/GeoLite2-ASN.mmdb', ['ru', 'en']);
+                $this->network = (object)$GeoLite2_ASN->asn($ip)->jsonSerialize() ?? null;
+            } catch (Throwable) {
+                /* :) */
+            }
         }
 
-        return false;
+        return $this;
     }
 }

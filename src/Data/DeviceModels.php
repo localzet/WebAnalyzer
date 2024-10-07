@@ -67,10 +67,10 @@ class DeviceModels
 
     public static function identify($type, $model)
     {
-        require_once __DIR__ . '/../../../data/models-' . $type . '.php';
+        require_once __DIR__ . '/../../data/models-' . $type . '.php';
 
         if ($type != 'blackberry' && $type != 'ios') {
-            require_once __DIR__ . '/../../../data/indices/models-' . $type . '.php';
+            require_once __DIR__ . '/../../data/indices/models-' . $type . '.php';
         }
 
         switch ($type) {
@@ -108,8 +108,8 @@ class DeviceModels
                 return self::identifyList(self::$KDDI_INDEX, self::$KDDI_MODELS, $model);
         }
 
-        require_once __DIR__ . '/../../../data/models-feature.php';
-        require_once __DIR__ . '/../../../data/indices/models-feature.php';
+        require_once __DIR__ . '/../../data/models-feature.php';
+        require_once __DIR__ . '/../../data/indices/models-feature.php';
         return self::identifyList(self::$FEATURE_INDEX, self::$FEATURE_MODELS, $model);
     }
 

@@ -31,35 +31,35 @@ trait Corrections
 {
     private function &applyCorrections()
     {
-        if (isset($this->data->browser->name) && isset($this->data->browser->using)) {
+        if (isset($this->browser->name) && isset($this->browser->using)) {
             $this->hideBrowserBasedOnUsing();
         }
 
-        if (isset($this->data->browser->name) && isset($this->data->os->name)) {
+        if (isset($this->browser->name) && isset($this->os->name)) {
             $this->hideBrowserBasedOnOperatingSystem();
         }
 
-        if (isset($this->data->browser->name) && $this->data->device->type == Constants\DeviceType::TELEVISION) {
+        if (isset($this->browser->name) && $this->device->type == Constants\DeviceType::TELEVISION) {
             $this->hideBrowserOnDeviceTypeTelevision();
         }
 
-        if (isset($this->data->browser->name) && $this->data->device->type == Constants\DeviceType::GAMING) {
+        if (isset($this->browser->name) && $this->device->type == Constants\DeviceType::GAMING) {
             $this->hideBrowserOnDeviceTypeGaming();
         }
 
-        if ($this->data->device->type == Constants\DeviceType::TELEVISION) {
+        if ($this->device->type == Constants\DeviceType::TELEVISION) {
             $this->hideOsOnDeviceTypeTelevision();
         }
 
-        if (isset($this->data->browser->name) && isset($this->data->engine->name)) {
+        if (isset($this->browser->name) && isset($this->engine->name)) {
             $this->fixMidoriEngineName();
         }
 
-        if (isset($this->data->browser->name) && isset($this->data->engine->name)) {
+        if (isset($this->browser->name) && isset($this->engine->name)) {
             $this->fixNineSkyEngineName();
         }
 
-        if (isset($this->data->browser->name) && isset($this->data->browser->family)) {
+        if (isset($this->browser->name) && isset($this->browser->family)) {
             $this->hideFamilyIfEqualToBrowser();
         }
 
@@ -69,100 +69,100 @@ trait Corrections
 
     private function hideFamilyIfEqualToBrowser()
     {
-        if ($this->data->browser->name == $this->data->browser->family->name) {
-            unset($this->data->browser->family);
+        if ($this->browser->name == $this->browser->family->name) {
+            unset($this->browser->family);
         }
     }
 
     private function fixMidoriEngineName()
     {
-        if ($this->data->browser->name == 'Midori' && $this->data->engine->name != 'Webkit') {
-            $this->data->engine->name = 'Webkit';
-            $this->data->engine->version = null;
+        if ($this->browser->name == 'Midori' && $this->engine->name != 'Webkit') {
+            $this->engine->name = 'Webkit';
+            $this->engine->version = null;
         }
     }
 
     private function fixNineSkyEngineName()
     {
-        if ($this->data->browser->name == 'NineSky' && $this->data->engine->name != 'Webkit') {
-            $this->data->engine->name = 'Webkit';
-            $this->data->engine->version = null;
+        if ($this->browser->name == 'NineSky' && $this->engine->name != 'Webkit') {
+            $this->engine->name = 'Webkit';
+            $this->engine->version = null;
         }
     }
 
     private function hideBrowserBasedOnUsing()
     {
-        if ($this->data->browser->name == 'Chrome') {
-            if ($this->data->browser->isUsing('Electron') || $this->data->browser->isUsing('Qt')) {
-                unset($this->data->browser->name);
-                unset($this->data->browser->version);
+        if ($this->browser->name == 'Chrome') {
+            if ($this->browser->isUsing('Electron') || $this->browser->isUsing('Qt')) {
+                unset($this->browser->name);
+                unset($this->browser->version);
             }
         }
     }
 
     private function hideBrowserBasedOnOperatingSystem()
     {
-        if ($this->data->os->name == 'Series60' && $this->data->browser->name == 'Internet Explorer') {
-            $this->data->browser->reset();
-            $this->data->engine->reset();
+        if ($this->os->name == 'Series60' && $this->browser->name == 'Internet Explorer') {
+            $this->browser->reset();
+            $this->engine->reset();
         }
 
-        if ($this->data->os->name == 'Series80' && $this->data->browser->name == 'Internet Explorer') {
-            $this->data->browser->reset();
-            $this->data->engine->reset();
+        if ($this->os->name == 'Series80' && $this->browser->name == 'Internet Explorer') {
+            $this->browser->reset();
+            $this->engine->reset();
         }
 
-        if ($this->data->os->name == 'Lindows' && $this->data->browser->name == 'Internet Explorer') {
-            $this->data->browser->reset();
-            $this->data->engine->reset();
+        if ($this->os->name == 'Lindows' && $this->browser->name == 'Internet Explorer') {
+            $this->browser->reset();
+            $this->engine->reset();
         }
 
-        if ($this->data->os->name == 'Tizen' && $this->data->browser->name == 'Chrome') {
-            $this->data->browser->reset([
-                'family' => $this->data->browser->family ?? null
+        if ($this->os->name == 'Tizen' && $this->browser->name == 'Chrome') {
+            $this->browser->reset([
+                'family' => $this->browser->family ?? null
             ]);
         }
 
-        if ($this->data->os->name == 'Ubuntu Touch' && $this->data->browser->name == 'Chromium') {
-            $this->data->browser->reset([
-                'family' => $this->data->browser->family ?? null
+        if ($this->os->name == 'Ubuntu Touch' && $this->browser->name == 'Chromium') {
+            $this->browser->reset([
+                'family' => $this->browser->family ?? null
             ]);
         }
 
-        if ($this->data->os->name == 'KaiOS' && $this->data->browser->name == 'Firefox Mobile') {
-            $this->data->browser->reset([
-                'family' => $this->data->browser->family ?? null
+        if ($this->os->name == 'KaiOS' && $this->browser->name == 'Firefox Mobile') {
+            $this->browser->reset([
+                'family' => $this->browser->family ?? null
             ]);
         }
     }
 
     private function hideBrowserOnDeviceTypeGaming()
     {
-        if (isset($this->data->device->model) && $this->data->device->model == 'PlayStation 2' && $this->data->browser->name == 'Internet Explorer') {
-            $this->data->browser->reset();
+        if (isset($this->device->model) && $this->device->model == 'PlayStation 2' && $this->browser->name == 'Internet Explorer') {
+            $this->browser->reset();
         }
     }
 
     private function hideBrowserOnDeviceTypeTelevision()
     {
-        switch ($this->data->browser->name) {
+        switch ($this->browser->name) {
             case 'Firefox':
-                if (!$this->data->isOs('Firefox OS')) {
-                    unset($this->data->browser->name);
-                    unset($this->data->browser->version);
+                if (!$this->isOs('Firefox OS')) {
+                    unset($this->browser->name);
+                    unset($this->browser->version);
                 }
                 break;
 
             case 'Internet Explorer':
                 $valid = false;
 
-                if (isset($this->data->device->model) && $this->data->device->model == 'WebTV') {
+                if (isset($this->device->model) && $this->device->model == 'WebTV') {
                     $valid = true;
                 }
 
                 if (!$valid) {
-                    unset($this->data->browser->name);
-                    unset($this->data->browser->version);
+                    unset($this->browser->name);
+                    unset($this->browser->version);
                 }
 
                 break;
@@ -171,16 +171,16 @@ trait Corrections
             case 'Chromium':
                 $valid = false;
 
-                if (isset($this->data->os->name) && in_array($this->data->os->name, ['Google TV', 'Android'])) {
+                if (isset($this->os->name) && in_array($this->os->name, ['Google TV', 'Android'])) {
                     $valid = true;
                 }
-                if (isset($this->data->device->model) && $this->data->device->model == 'Chromecast') {
+                if (isset($this->device->model) && $this->device->model == 'Chromecast') {
                     $valid = true;
                 }
 
                 if (!$valid) {
-                    unset($this->data->browser->name);
-                    unset($this->data->browser->version);
+                    unset($this->browser->name);
+                    unset($this->browser->version);
                 }
 
                 break;
@@ -189,8 +189,8 @@ trait Corrections
 
     private function hideOsOnDeviceTypeTelevision()
     {
-        if (isset($this->data->os->name) && !in_array($this->data->os->name, ['Aliyun OS', 'Tizen', 'Android', 'Android TV', 'FireOS', 'Google TV', 'Firefox OS', 'OpenTV', 'webOS'])) {
-            $this->data->os->reset();
+        if (isset($this->os->name) && !in_array($this->os->name, ['Aliyun OS', 'Tizen', 'Android', 'Android TV', 'FireOS', 'Google TV', 'Firefox OS', 'OpenTV', 'webOS'])) {
+            $this->os->reset();
         }
     }
 }

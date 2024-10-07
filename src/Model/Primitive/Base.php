@@ -94,4 +94,9 @@ class Base
 
         return implode(", ", $lines);
     }
+
+    public function toArray(): array
+    {
+        return (array) $this;
+    }
 }

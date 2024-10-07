@@ -38,7 +38,7 @@ trait Printer
         /* TASKalfa */
 
         if (preg_match('/TASKalfa ([0-9A-Z]+)/iu', $ua, $match)) {
-            $this->data->device->setIdentification([
+            $this->device->setIdentification([
                 'manufacturer' => 'Kyocera',
                 'model' => 'TASKalfa ' . $match[1],
                 'type' => Constants\DeviceType::PRINTER
@@ -49,7 +49,7 @@ trait Printer
         /* Canon IJ */
 
         if (preg_match('/CanonIJCL/iu', $ua, $match)) {
-            $this->data->device->setIdentification([
+            $this->device->setIdentification([
                 'manufacturer' => 'Canon',
                 'model' => 'IJ Printer',
                 'type' => Constants\DeviceType::PRINTER
@@ -59,7 +59,7 @@ trait Printer
         /* Canon iR S */
 
         if (preg_match('/IR-S/iu', $ua, $match)) {
-            $this->data->device->setIdentification([
+            $this->device->setIdentification([
                 'manufacturer' => 'Canon',
                 'model' => 'imageRUNNER',
                 'type' => Constants\DeviceType::PRINTER
@@ -69,7 +69,7 @@ trait Printer
         /* HP Web PrintSmart */
 
         if (preg_match('/HP Web PrintSmart/iu', $ua, $match)) {
-            $this->data->device->setIdentification([
+            $this->device->setIdentification([
                 'manufacturer' => 'HP',
                 'model' => 'Web PrintSmart',
                 'type' => Constants\DeviceType::PRINTER
@@ -79,7 +79,7 @@ trait Printer
         /* Epson Hello */
 
         if (preg_match('/EpsonHello\//iu', $ua, $match)) {
-            $this->data->device->setIdentification([
+            $this->device->setIdentification([
                 'manufacturer' => 'Epson',
                 'model' => 'Hello',
                 'type' => Constants\DeviceType::PRINTER

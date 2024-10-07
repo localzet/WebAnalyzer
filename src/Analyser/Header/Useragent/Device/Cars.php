@@ -44,8 +44,8 @@ trait Cars
     private function detectTesla($ua)
     {
         if (preg_match('/QtCarBrowser/u', $ua)) {
-            $this->data->os->reset();
-            $this->data->device->setIdentification([
+            $this->os->reset();
+            $this->device->setIdentification([
                 'manufacturer' => 'Tesla',
                 'model' => 'Model S',
                 'type' => Constants\DeviceType::CAR

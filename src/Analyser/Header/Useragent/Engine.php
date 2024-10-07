@@ -50,27 +50,27 @@ trait Engine
     private function detectWebkit($ua)
     {
         if (preg_match('/WebKit\/([0-9.]*)/iu', $ua, $match)) {
-            $this->data->engine->name = 'Webkit';
-            $this->data->engine->version = new Version(['value' => $match[1]]);
+            $this->engine->name = 'Webkit';
+            $this->engine->version = new Version(['value' => $match[1]]);
 
             if (preg_match('/(?:Chrome|Chromium)\/([0-9]*)/u', $ua, $match)) {
                 if (intval($match[1]) >= 27) {
-                    $this->data->engine->reset(['name' => 'Blink']);
+                    $this->engine->reset(['name' => 'Blink']);
                 }
             }
         }
 
         if (preg_match('/Browser\/AppleWebKit\/?([0-9.]*)/iu', $ua, $match)) {
-            $this->data->engine->name = 'Webkit';
-            $this->data->engine->version = new Version(['value' => $match[1]]);
+            $this->engine->name = 'Webkit';
+            $this->engine->version = new Version(['value' => $match[1]]);
         }
 
         if (preg_match('/AppleWebkit\(like Gecko\)/iu', $ua, $match)) {
-            $this->data->engine->name = 'Webkit';
+            $this->engine->name = 'Webkit';
         }
 
         if (preg_match('/CoralWebkit/iu', $ua, $match)) {
-            $this->data->engine->version = null;
+            $this->engine->version = null;
         }
     }
 
@@ -80,8 +80,8 @@ trait Engine
     private function detectKHTML($ua)
     {
         if (preg_match('/KHTML\/([0-9.]*)/u', $ua, $match)) {
-            $this->data->engine->name = 'KHTML';
-            $this->data->engine->version = new Version(['value' => $match[1]]);
+            $this->engine->name = 'KHTML';
+            $this->engine->version = new Version(['value' => $match[1]]);
         }
     }
 
@@ -91,10 +91,10 @@ trait Engine
     private function detectGecko($ua)
     {
         if (preg_match('/Gecko/u', $ua) && !preg_match('/like Gecko/iu', $ua)) {
-            $this->data->engine->name = 'Gecko';
+            $this->engine->name = 'Gecko';
 
             if (preg_match('/; rv:([^\);]+)[\);]/u', $ua, $match)) {
-                $this->data->engine->version = new Version(['value' => $match[1], 'details' => 3]);
+                $this->engine->version = new Version(['value' => $match[1], 'details' => 3]);
             }
         }
     }
@@ -105,8 +105,8 @@ trait Engine
     private function detectServo($ua)
     {
         if (preg_match('/Servo\/([0-9.]*)/u', $ua, $match)) {
-            $this->data->engine->name = 'Servo';
-            $this->data->engine->version = new Version(['value' => $match[1]]);
+            $this->engine->name = 'Servo';
+            $this->engine->version = new Version(['value' => $match[1]]);
         }
     }
 
@@ -116,14 +116,14 @@ trait Engine
     private function detectGoanna($ua)
     {
         if (preg_match('/Goanna/u', $ua)) {
-            $this->data->engine->name = 'Goanna';
+            $this->engine->name = 'Goanna';
 
             if (preg_match('/Goanna\/([0-9]\.[0-9.]+)/u', $ua, $match)) {
-                $this->data->engine->version = new Version(['value' => $match[1]]);
+                $this->engine->version = new Version(['value' => $match[1]]);
             }
 
             if (preg_match('/Goanna\/20[0-9]{6,6}/u', $ua) && preg_match('/; rv:([^\);]+)[\);]/u', $ua, $match)) {
-                $this->data->engine->version = new Version(['value' => $match[1]]);
+                $this->engine->version = new Version(['value' => $match[1]]);
             }
         }
     }
@@ -134,8 +134,8 @@ trait Engine
     private function detectPresto($ua)
     {
         if (preg_match('/Presto\/([0-9.]*)/u', $ua, $match)) {
-            $this->data->engine->name = 'Presto';
-            $this->data->engine->version = new Version(['value' => $match[1]]);
+            $this->engine->name = 'Presto';
+            $this->engine->version = new Version(['value' => $match[1]]);
         }
     }
 
@@ -145,39 +145,39 @@ trait Engine
     private function detectTrident($ua)
     {
         if (preg_match('/Trident\/([0-9.]*)/u', $ua, $match)) {
-            $this->data->engine->name = 'Trident';
-            $this->data->engine->version = new Version(['value' => $match[1]]);
+            $this->engine->name = 'Trident';
+            $this->engine->version = new Version(['value' => $match[1]]);
 
 
-            if (isset($this->data->browser->version) && isset($this->data->browser->name) && $this->data->browser->name == 'Internet Explorer') {
-                if ($this->data->engine->version->toNumber() >= 7 && $this->data->browser->version->toFloat() < 11) {
-                    $this->data->browser->version = new Version(['value' => '11.0']);
-                    $this->data->browser->mode = 'compat';
+            if (isset($this->browser->version) && isset($this->browser->name) && $this->browser->name == 'Internet Explorer') {
+                if ($this->engine->version->toNumber() >= 7 && $this->browser->version->toFloat() < 11) {
+                    $this->browser->version = new Version(['value' => '11.0']);
+                    $this->browser->mode = 'compat';
                 }
 
-                if ($this->data->engine->version->toNumber() == 6 && $this->data->browser->version->toFloat() < 10) {
-                    $this->data->browser->version = new Version(['value' => '10.0']);
-                    $this->data->browser->mode = 'compat';
+                if ($this->engine->version->toNumber() == 6 && $this->browser->version->toFloat() < 10) {
+                    $this->browser->version = new Version(['value' => '10.0']);
+                    $this->browser->mode = 'compat';
                 }
 
-                if ($this->data->engine->version->toNumber() == 5 && $this->data->browser->version->toFloat() < 9) {
-                    $this->data->browser->version = new Version(['value' => '9.0']);
-                    $this->data->browser->mode = 'compat';
+                if ($this->engine->version->toNumber() == 5 && $this->browser->version->toFloat() < 9) {
+                    $this->browser->version = new Version(['value' => '9.0']);
+                    $this->browser->mode = 'compat';
                 }
 
-                if ($this->data->engine->version->toNumber() == 4 && $this->data->browser->version->toFloat() < 8) {
-                    $this->data->browser->version = new Version(['value' => '8.0']);
-                    $this->data->browser->mode = 'compat';
+                if ($this->engine->version->toNumber() == 4 && $this->browser->version->toFloat() < 8) {
+                    $this->browser->version = new Version(['value' => '8.0']);
+                    $this->browser->mode = 'compat';
                 }
             }
 
-            if (isset($this->data->os->version) && isset($this->data->os->name) && $this->data->os->name == 'Windows Phone' && isset($this->data->browser->name) && $this->data->browser->name == 'Mobile Internet Explorer') {
-                if ($this->data->engine->version->toNumber() == 7 && $this->data->os->version->toFloat() < 8.1) {
-                    $this->data->os->version = new Version(['value' => '8.1', 'details' => 2]);
+            if (isset($this->os->version) && isset($this->os->name) && $this->os->name == 'Windows Phone' && isset($this->browser->name) && $this->browser->name == 'Mobile Internet Explorer') {
+                if ($this->engine->version->toNumber() == 7 && $this->os->version->toFloat() < 8.1) {
+                    $this->os->version = new Version(['value' => '8.1', 'details' => 2]);
                 }
 
-                if ($this->data->engine->version->toNumber() == 5 && $this->data->os->version->toFloat() < 7.5) {
-                    $this->data->os->version = new Version(['value' => '7.5', 'details' => 2]);
+                if ($this->engine->version->toNumber() == 5 && $this->os->version->toFloat() < 7.5) {
+                    $this->os->version = new Version(['value' => '7.5', 'details' => 2]);
                 }
             }
         }
@@ -189,8 +189,8 @@ trait Engine
     private function detectEdgeHTMLUseragent($ua)
     {
         if (preg_match('/Edge\/([0-9.]*)/u', $ua, $match)) {
-            $this->data->engine->name = 'EdgeHTML';
-            $this->data->engine->version = new Version(['value' => $match[1], 'hidden' => true]);
+            $this->engine->name = 'EdgeHTML';
+            $this->engine->version = new Version(['value' => $match[1], 'hidden' => true]);
         }
     }
 
@@ -199,8 +199,8 @@ trait Engine
     private function detectFlow($ua)
     {
         if (preg_match('/EkiohFlow\/([0-9.]*)/u', $ua, $match)) {
-            $this->data->engine->name = 'EkiohFlow';
-            $this->data->engine->version = new Version(['value' => $match[1]]);
+            $this->engine->name = 'EkiohFlow';
+            $this->engine->version = new Version(['value' => $match[1]]);
         }
     }
 }

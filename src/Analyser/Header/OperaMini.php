@@ -28,39 +28,37 @@ namespace localzet\WebAnalyzer\Analyser\Header;
 use localzet\WebAnalyzer\Constants;
 use localzet\WebAnalyzer\Data;
 
-class OperaMini
+trait OperaMini
 {
-    public function __construct($header, &$data)
+    public function analyseOperaMiniPhone($header)
     {
-        $this->data =& $data;
-
         $parts = explode(' # ', $header);
         $manufacturer = $parts[0] ?? '';
         $model = $parts[1] ?? '';
 
         if ($manufacturer != '?' && $model != '?') {
-            if ($this->data->device->identified < Constants\Id::PATTERN) {
-                if ($this->identifyBasedOnModel($model)) {
+            if ($this->device->identified < Constants\Id::PATTERN) {
+                if ($this->identifyBasedOnModelOperaMini($model)) {
                     return;
                 }
 
-                $this->data->device->manufacturer = $manufacturer;
-                $this->data->device->model = $model;
-                $this->data->device->identified = true;
+                $this->device->manufacturer = $manufacturer;
+                $this->device->model = $model;
+                $this->device->identified = true;
             }
         }
     }
 
-    private function identifyBasedOnModel($model)
+    private function identifyBasedOnModelOperaMini($model)
     {
         $device = Data\DeviceModels::identify('bada', $model);
         if ($device->identified) {
-            $device->identified |= $this->data->device->identified;
-            $this->data->device = $device;
+            $device->identified |= $this->device->identified;
+            $this->device = $device;
 
-            if (!isset($this->data->os->name) || $this->data->os->name != 'Bada') {
-                $this->data->os->name = 'Bada';
-                $this->data->os->version = null;
+            if (!isset($this->os->name) || $this->os->name != 'Bada') {
+                $this->os->name = 'Bada';
+                $this->os->version = null;
             }
 
             return true;
@@ -68,12 +66,12 @@ class OperaMini
 
         $device = Data\DeviceModels::identify('blackberry', $model);
         if ($device->identified) {
-            $device->identified |= $this->data->device->identified;
-            $this->data->device = $device;
+            $device->identified |= $this->device->identified;
+            $this->device = $device;
 
-            if (!isset($this->data->os->name) || $this->data->os->name != 'BlackBerry OS') {
-                $this->data->os->name = 'BlackBerry OS';
-                $this->data->os->version = null;
+            if (!isset($this->os->name) || $this->os->name != 'BlackBerry OS') {
+                $this->os->name = 'BlackBerry OS';
+                $this->os->version = null;
             }
 
             return true;
@@ -81,12 +79,12 @@ class OperaMini
 
         $device = Data\DeviceModels::identify('wm', $model);
         if ($device->identified) {
-            $device->identified |= $this->data->device->identified;
-            $this->data->device = $device;
+            $device->identified |= $this->device->identified;
+            $this->device = $device;
 
-            if (!isset($this->data->os->name) || $this->data->os->name != 'Windows Mobile') {
-                $this->data->os->name = 'Windows Mobile';
-                $this->data->os->version = null;
+            if (!isset($this->os->name) || $this->os->name != 'Windows Mobile') {
+                $this->os->name = 'Windows Mobile';
+                $this->os->version = null;
             }
 
             return true;

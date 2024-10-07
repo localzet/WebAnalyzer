@@ -56,7 +56,7 @@ trait Mobile
     private function detectGenericMobile($ua)
     {
         if (preg_match('/(MIDP|CLDC|UNTRUSTED\/|3gpp-gba|[Ww][Aa][Pp]2.0|[Ww][Aa][Pp][ _-]?[Bb]rowser)/u', $ua)) {
-            $this->data->device->type = Constants\DeviceType::MOBILE;
+            $this->device->type = Constants\DeviceType::MOBILE;
         }
     }
 
@@ -66,22 +66,22 @@ trait Mobile
     private function detectKin($ua)
     {
         if (preg_match('/KIN\.(One|Two) ([0-9.]*)/ui', $ua, $match)) {
-            $this->data->os->name = 'Kin OS';
-            $this->data->os->version = new Version(['value' => $match[2], 'details' => 2]);
+            $this->os->name = 'Kin OS';
+            $this->os->version = new Version(['value' => $match[2], 'details' => 2]);
 
             switch ($match[1]) {
                 case 'One':
-                    $this->data->device->manufacturer = 'Microsoft';
-                    $this->data->device->model = 'Kin ONE';
-                    $this->data->device->identified |= Constants\Id::MATCH_UA;
-                    $this->data->device->generic = false;
+                    $this->device->manufacturer = 'Microsoft';
+                    $this->device->model = 'Kin ONE';
+                    $this->device->identified |= Constants\Id::MATCH_UA;
+                    $this->device->generic = false;
                     break;
 
                 case 'Two':
-                    $this->data->device->manufacturer = 'Microsoft';
-                    $this->data->device->model = 'Kin TWO';
-                    $this->data->device->identified |= Constants\Id::MATCH_UA;
-                    $this->data->device->generic = false;
+                    $this->device->manufacturer = 'Microsoft';
+                    $this->device->model = 'Kin TWO';
+                    $this->device->identified |= Constants\Id::MATCH_UA;
+                    $this->device->generic = false;
                     break;
             }
         }
@@ -92,7 +92,7 @@ trait Mobile
 
     private function detectNokia($ua)
     {
-        if (isset($this->data->device->manufacturer)) {
+        if (isset($this->device->manufacturer)) {
             return;
         }
 
@@ -101,53 +101,53 @@ trait Mobile
                 return;
             }
 
-            $this->data->device->manufacturer = 'Nokia';
-            $this->data->device->model = Data\DeviceModels::cleanup($match[1]);
-            $this->data->device->identifier = $match[0];
-            $this->data->device->identified |= Constants\Id::PATTERN;
-            $this->data->device->generic = false;
-            $this->data->device->type = Constants\DeviceType::MOBILE;
+            $this->device->manufacturer = 'Nokia';
+            $this->device->model = Data\DeviceModels::cleanup($match[1]);
+            $this->device->identifier = $match[0];
+            $this->device->identified |= Constants\Id::PATTERN;
+            $this->device->generic = false;
+            $this->device->type = Constants\DeviceType::MOBILE;
 
-            if (!($this->data->device->identified & Constants\Id::MATCH_UA)) {
-                $device = Data\DeviceModels::identify('asha', $this->data->device->model);
+            if (!($this->device->identified & Constants\Id::MATCH_UA)) {
+                $device = Data\DeviceModels::identify('asha', $this->device->model);
                 if ($device->identified) {
-                    $device->identified |= $this->data->device->identified;
-                    $this->data->device = $device;
+                    $device->identified |= $this->device->identified;
+                    $this->device = $device;
 
-                    if (!isset($this->data->os->name) || $this->data->os->name != 'Nokia Asha Platform') {
-                        $this->data->os->name = 'Nokia Asha Platform';
-                        $this->data->os->version = new Version(['value' => '1.0']);
+                    if (!isset($this->os->name) || $this->os->name != 'Nokia Asha Platform') {
+                        $this->os->name = 'Nokia Asha Platform';
+                        $this->os->version = new Version(['value' => '1.0']);
 
                         if (preg_match('/java_runtime_version=Nokia_Asha_([0-9_]+)[;\)]/u', $ua, $match)) {
-                            $this->data->os->version = new Version(['value' => str_replace('_', '.', $match[1])]);
+                            $this->os->version = new Version(['value' => str_replace('_', '.', $match[1])]);
                         }
                     }
                 }
             }
 
-            if (!($this->data->device->identified & Constants\Id::MATCH_UA)) {
-                $device = Data\DeviceModels::identify('s40', $this->data->device->model);
+            if (!($this->device->identified & Constants\Id::MATCH_UA)) {
+                $device = Data\DeviceModels::identify('s40', $this->device->model);
                 if ($device->identified) {
-                    $device->identified |= $this->data->device->identified;
-                    $this->data->device = $device;
+                    $device->identified |= $this->device->identified;
+                    $this->device = $device;
 
-                    if (!isset($this->data->os->name) || $this->data->os->name != 'Series40') {
-                        $this->data->os->name = 'Series40';
-                        $this->data->os->version = null;
+                    if (!isset($this->os->name) || $this->os->name != 'Series40') {
+                        $this->os->name = 'Series40';
+                        $this->os->version = null;
                     }
                 }
             }
 
-            if (!($this->data->device->identified & Constants\Id::MATCH_UA)) {
-                $device = Data\DeviceModels::identify('symbian', $this->data->device->model);
+            if (!($this->device->identified & Constants\Id::MATCH_UA)) {
+                $device = Data\DeviceModels::identify('symbian', $this->device->model);
                 if ($device->identified) {
-                    $device->identified |= $this->data->device->identified;
-                    $this->data->device = $device;
+                    $device->identified |= $this->device->identified;
+                    $this->device = $device;
 
-                    if (!isset($this->data->os->name) || $this->data->os->name != 'Series60') {
-                        $this->data->os->name = 'Series60';
-                        $this->data->os->version = null;
-                        $this->data->os->family = new Family(['name' => 'Symbian']);
+                    if (!isset($this->os->name) || $this->os->name != 'Series60') {
+                        $this->os->name = 'Series60';
+                        $this->os->version = null;
+                        $this->os->family = new Family(['name' => 'Symbian']);
                     }
                 }
             }
@@ -161,7 +161,7 @@ trait Mobile
 
     private function detectSamsung($ua)
     {
-        if (isset($this->data->device->manufacturer)) {
+        if (isset($this->device->manufacturer)) {
             return;
         }
 
@@ -170,45 +170,45 @@ trait Mobile
                 return;
             }
 
-            $this->data->device->manufacturer = 'Samsung';
-            $this->data->device->model = Data\DeviceModels::cleanup($match[1]);
-            $this->data->device->identifier = $match[0];
-            $this->data->device->identified |= Constants\Id::PATTERN;
-            $this->data->device->generic = false;
-            $this->data->device->type = Constants\DeviceType::MOBILE;
+            $this->device->manufacturer = 'Samsung';
+            $this->device->model = Data\DeviceModels::cleanup($match[1]);
+            $this->device->identifier = $match[0];
+            $this->device->identified |= Constants\Id::PATTERN;
+            $this->device->generic = false;
+            $this->device->type = Constants\DeviceType::MOBILE;
 
-            if ($this->data->isOS('Bada')) {
-                $device = Data\DeviceModels::identify('bada', $this->data->device->model);
+            if ($this->isOS('Bada')) {
+                $device = Data\DeviceModels::identify('bada', $this->device->model);
                 if ($device->identified) {
-                    $device->identified |= $this->data->device->identified;
-                    $this->data->device = $device;
+                    $device->identified |= $this->device->identified;
+                    $this->device = $device;
                 }
             }
 
-            if ($this->data->isOS('Series60')) {
-                $device = Data\DeviceModels::identify('symbian', $this->data->device->model);
+            if ($this->isOS('Series60')) {
+                $device = Data\DeviceModels::identify('symbian', $this->device->model);
                 if ($device->identified) {
-                    $device->identified |= $this->data->device->identified;
-                    $this->data->device = $device;
+                    $device->identified |= $this->device->identified;
+                    $this->device = $device;
                 }
             }
 
-            if (!$this->data->os->isDetected()) {
+            if (!$this->os->isDetected()) {
                 if (preg_match('/Jasmine\/([0-9.]*)/u', $ua, $match)) {
                     $version = $match[1];
 
-                    $device = Data\DeviceModels::identify('touchwiz', $this->data->device->model);
+                    $device = Data\DeviceModels::identify('touchwiz', $this->device->model);
                     if ($device->identified) {
-                        $device->identified |= $this->data->device->identified;
-                        $this->data->device = $device;
-                        $this->data->os->name = 'Touchwiz';
+                        $device->identified |= $this->device->identified;
+                        $this->device = $device;
+                        $this->os->name = 'Touchwiz';
 
                         switch ($version) {
                             case '0.8':
-                                $this->data->os->version = new Version(['value' => '1.0']);
+                                $this->os->version = new Version(['value' => '1.0']);
                                 break;
                             case '1.0':
-                                $this->data->os->version = new Version(['value' => '2.0', 'alias' => '2.0 or earlier']);
+                                $this->os->version = new Version(['value' => '2.0', 'alias' => '2.0 or earlier']);
                                 break;
                         }
                     }
@@ -217,36 +217,36 @@ trait Mobile
                 if (preg_match('/(?:Dolfin\/([0-9.]*)|Browser\/Dolfin([0-9.]*))/u', $ua, $match)) {
                     $version = !empty($match[1]) ? $match[1] : $match[2];
 
-                    $device = Data\DeviceModels::identify('bada', $this->data->device->model);
+                    $device = Data\DeviceModels::identify('bada', $this->device->model);
                     if ($device->identified) {
-                        $device->identified |= $this->data->device->identified;
-                        $this->data->device = $device;
-                        $this->data->os->name = 'Bada';
+                        $device->identified |= $this->device->identified;
+                        $this->device = $device;
+                        $this->os->name = 'Bada';
 
                         switch ($version) {
                             case '2.0':
-                                $this->data->os->version = new Version(['value' => '1.0']);
+                                $this->os->version = new Version(['value' => '1.0']);
                                 break;
                             case '2.2':
-                                $this->data->os->version = new Version(['value' => '1.2']);
+                                $this->os->version = new Version(['value' => '1.2']);
                                 break;
                         }
                     } else {
-                        $device = Data\DeviceModels::identify('touchwiz', $this->data->device->model);
+                        $device = Data\DeviceModels::identify('touchwiz', $this->device->model);
                         if ($device->identified) {
-                            $device->identified |= $this->data->device->identified;
-                            $this->data->device = $device;
-                            $this->data->os->name = 'Touchwiz';
+                            $device->identified |= $this->device->identified;
+                            $this->device = $device;
+                            $this->os->name = 'Touchwiz';
 
                             switch ($version) {
                                 case '1.0':
-                                    $this->data->os->version = new Version(['value' => '2.0', 'alias' => '2.0 or earlier']);
+                                    $this->os->version = new Version(['value' => '2.0', 'alias' => '2.0 or earlier']);
                                     break;
                                 case '1.5':
-                                    $this->data->os->version = new Version(['value' => '2.0']);
+                                    $this->os->version = new Version(['value' => '2.0']);
                                     break;
                                 case '2.0':
-                                    $this->data->os->version = new Version(['value' => '3.0']);
+                                    $this->os->version = new Version(['value' => '3.0']);
                                     break;
                             }
                         }
@@ -263,11 +263,11 @@ trait Mobile
 
     private function detectGenericMobileModels($ua)
     {
-        if ($this->data->device->identified & Constants\Id::PATTERN) {
+        if ($this->device->identified & Constants\Id::PATTERN) {
             return;
         }
 
-        if (isset($this->data->device->manufacturer)) {
+        if (isset($this->device->manufacturer)) {
             return;
         }
 
@@ -275,48 +275,48 @@ trait Mobile
             return;
         }
 
-        $this->data->device->identifyModel('/T-Mobile[_ ]([^\/;]+)/u', $ua, [
+        $this->device->identifyModel('/T-Mobile[_ ]([^\/;]+)/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'T-Mobile'
         ]);
 
-        $this->data->device->identifyModel('/Danger hiptop ([0-9.]+)/u', $ua, [
+        $this->device->identifyModel('/Danger hiptop ([0-9.]+)/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Danger',
             'model' => 'Hiptop'
         ]);
 
-        $this->data->device->identifyModel('/HP(iPAQ[0-9A-Za-z]+)\//u', $ua, [
+        $this->device->identifyModel('/HP(iPAQ[0-9A-Za-z]+)\//u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'HP'
         ]);
 
-        $this->data->device->identifyModel('/Acer[_-]?([^\s\/_]*)/ui', $ua, [
+        $this->device->identifyModel('/Acer[_-]?([^\s\/_]*)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Acer'
         ]);
 
-        $this->data->device->identifyModel('/Amoi[ -]([^\s\/_]*)/ui', $ua, [
+        $this->device->identifyModel('/Amoi[ -]([^\s\/_]*)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Amoi'
         ]);
 
-        $this->data->device->identifyModel('/AIRNESS-([^\/]*)/ui', $ua, [
+        $this->device->identifyModel('/AIRNESS-([^\/]*)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Airness'
         ]);
 
-        $this->data->device->identifyModel('/ASUS-([^\/]*)/ui', $ua, [
+        $this->device->identifyModel('/ASUS-([^\/]*)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Asus'
         ]);
 
-        $this->data->device->identifyModel('/BenQ[ -]([^\/]*)/ui', $ua, [
+        $this->device->identifyModel('/BenQ[ -]([^\/]*)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'BenQ'
         ]);
 
-        $this->data->device->identifyModel('/ maui ([a-z0-9]+)/u', $ua, [
+        $this->device->identifyModel('/ maui ([a-z0-9]+)/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'BenQ',
             'model' => function ($model) {
@@ -324,7 +324,7 @@ trait Mobile
             }
         ]);
 
-        $this->data->device->identifyModel('/ALCATEL[_-]([^\/]*)/ui', $ua, [
+        $this->device->identifyModel('/ALCATEL[_-]([^\/]*)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Alcatel',
             'model' => function ($model) {
@@ -340,172 +340,172 @@ trait Mobile
             }
         ]);
 
-        $this->data->device->identifyModel('/Bird[ _\-\.]([^\/]*)/ui', $ua, [
+        $this->device->identifyModel('/Bird[ _\-\.]([^\/]*)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Bird'
         ]);
 
-        $this->data->device->identifyModel('/(?:YL-|YuLong-)?COOLPAD([^\s]+)/ui', $ua, [
+        $this->device->identifyModel('/(?:YL-|YuLong-)?COOLPAD([^\s]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Coolpad'
         ]);
 
-        $this->data->device->identifyModel('/CELKON\.([^\s]+)/ui', $ua, [
+        $this->device->identifyModel('/CELKON\.([^\s]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Celkon'
         ]);
 
-        $this->data->device->identifyModel('/Coship ([^\s]+)/ui', $ua, [
+        $this->device->identifyModel('/Coship ([^\s]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Coship'
         ]);
 
-        $this->data->device->identifyModel('/Cricket-([^\s]+)/ui', $ua, [
+        $this->device->identifyModel('/Cricket-([^\s]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Cricket'
         ]);
 
-        $this->data->device->identifyModel('/DESAY[ _]([^\s]+)/ui', $ua, [
+        $this->device->identifyModel('/DESAY[ _]([^\s]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'DESAY'
         ]);
 
-        $this->data->device->identifyModel('/Diamond_([^\s]+)/ui', $ua, [
+        $this->device->identifyModel('/Diamond_([^\s]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Diamond'
         ]);
 
-        $this->data->device->identifyModel('/dopod[-_]?([^\s]+)/ui', $ua, [
+        $this->device->identifyModel('/dopod[-_]?([^\s]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Dopod'
         ]);
 
-        $this->data->device->identifyModel('/^Ericsson([^\/]+)/ui', $ua, [
+        $this->device->identifyModel('/^Ericsson([^\/]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Ericsson'
         ]);
 
-        $this->data->device->identifyModel('/^(R[0-9]{3,3}) [0-9\.]+ WAP/ui', $ua, [
+        $this->device->identifyModel('/^(R[0-9]{3,3}) [0-9\.]+ WAP/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Ericsson'
         ]);
 
-        $this->data->device->identifyModel('/FLY_]?([^\s\/]+)/ui', $ua, [
+        $this->device->identifyModel('/FLY_]?([^\s\/]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Fly'
         ]);
 
-        $this->data->device->identifyModel('/GIONEE[-_ ]([^\s\/;]+)/ui', $ua, [
+        $this->device->identifyModel('/GIONEE[-_ ]([^\s\/;]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Gionee'
         ]);
 
-        $this->data->device->identifyModel('/GIONEE([A-Z0-9]+)/ui', $ua, [
+        $this->device->identifyModel('/GIONEE([A-Z0-9]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Gionee'
         ]);
 
-        $this->data->device->identifyModel('/HIKe_([^\s]+)/ui', $ua, [
+        $this->device->identifyModel('/HIKe_([^\s]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'HIKe'
         ]);
 
-        $this->data->device->identifyModel('/HAIER-([A-Z][0-9]+)/ui', $ua, [
+        $this->device->identifyModel('/HAIER-([A-Z][0-9]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Haier'
         ]);
 
-        $this->data->device->identifyModel('/Hisense[ -](?:HS-)?([^\s]+)/ui', $ua, [
+        $this->device->identifyModel('/Hisense[ -](?:HS-)?([^\s]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Hisense'
         ]);
 
-        $this->data->device->identifyModel('/HS-([^\s]+)/ui', $ua, [
+        $this->device->identifyModel('/HS-([^\s]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Hisense'
         ]);
 
-        $this->data->device->identifyModel('/HTC[\s_-]?([^\s\/\(\);][^\/\(\);]+)/ui', $ua, [
+        $this->device->identifyModel('/HTC[\s_-]?([^\s\/\(\);][^\/\(\);]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'HTC'
         ]);
 
-        $this->data->device->identifyModel('/(?:HTC_)?([A-Z0-9_]+_T[0-9]{4,4})/ui', $ua, [
+        $this->device->identifyModel('/(?:HTC_)?([A-Z0-9_]+_T[0-9]{4,4})/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'HTC'
         ]);
 
-        $this->data->device->identifyModel('/HUAWEI[\s_-]?([^\/\)\()]+)/ui', $ua, [
+        $this->device->identifyModel('/HUAWEI[\s_-]?([^\/\)\()]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Huawei'
         ]);
 
-        $this->data->device->identifyModel('/Karbonn ([a-z0-9]+(?: ?Star| ?Plus|\+)?)/ui', $ua, [
+        $this->device->identifyModel('/Karbonn ([a-z0-9]+(?: ?Star| ?Plus|\+)?)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Karbonn'
         ]);
 
-        $this->data->device->identifyModel('/KWC-([^\s\/]+)/ui', $ua, [
+        $this->device->identifyModel('/KWC-([^\s\/]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Kyocera'
         ]);
 
-        $this->data->device->identifyModel('/KONKA[-_]?([^\s]+)/ui', $ua, [
+        $this->device->identifyModel('/KONKA[-_]?([^\s]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Konka'
         ]);
 
-        $this->data->device->identifyModel('/TIANYU-KTOUCH\/([^\/]+)/ui', $ua, [
+        $this->device->identifyModel('/TIANYU-KTOUCH\/([^\/]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'K-Touch'
         ]);
 
-        $this->data->device->identifyModel('/K-Touch_?([^\/]*)/ui', $ua, [
+        $this->device->identifyModel('/K-Touch_?([^\/]*)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'K-Touch'
         ]);
 
-        $this->data->device->identifyModel('/Lenovo[_-]?([^\/]*)/ui', $ua, [
+        $this->device->identifyModel('/Lenovo[_-]?([^\/]*)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Lenovo'
         ]);
 
-        $this->data->device->identifyModel('/Lephone_([^\/]*)/ui', $ua, [
+        $this->device->identifyModel('/Lephone_([^\/]*)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Lephone'
         ]);
 
-        $this->data->device->identifyModel('/LGE?([A-Z]{2,2}[0-9]+)/ui', $ua, [
+        $this->device->identifyModel('/LGE?([A-Z]{2,2}[0-9]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'LG'
         ]);
 
-        $this->data->device->identifyModel('/LGE?(?:\/|-|_)([^\s\)\-\[\/]+)/ui', $ua, [
+        $this->device->identifyModel('/LGE?(?:\/|-|_)([^\s\)\-\[\/]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'LG'
         ]);
 
-        $this->data->device->identifyModel('/LGE? ?([A-Z]*[0-9]+[A-Z]?)/u', $ua, [
+        $this->device->identifyModel('/LGE? ?([A-Z]*[0-9]+[A-Z]?)/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'LG'
         ]);
 
-        $this->data->device->identifyModel('/Micromax([^\)]+)/ui', $ua, [
+        $this->device->identifyModel('/Micromax([^\)]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Micromax'
         ]);
 
-        $this->data->device->identifyModel('/^MOTO-?([^\/_]+)/u', $ua, [
+        $this->device->identifyModel('/^MOTO-?([^\/_]+)/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Motorola'
         ]);
 
-        $this->data->device->identifyModel('/MOT-([^\/_\.]+)/ui', $ua, [
+        $this->device->identifyModel('/MOT-([^\/_\.]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Motorola'
         ]);
 
-        $this->data->device->identifyModel('/Motorola-([^\s]+)/ui', $ua, [
+        $this->device->identifyModel('/Motorola-([^\s]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Motorola',
             'model' => function ($model) {
@@ -513,52 +513,52 @@ trait Mobile
             }
         ]);
 
-        $this->data->device->identifyModel('/Motorola[_ ]([^\/_;\)]+)/ui', $ua, [
+        $this->device->identifyModel('/Motorola[_ ]([^\/_;\)]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Motorola'
         ]);
 
-        $this->data->device->identifyModel('/Moto([^\/\s_;r][^\/\s_;]*)/u', $ua, [
+        $this->device->identifyModel('/Moto([^\/\s_;r][^\/\s_;]*)/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Motorola'
         ]);
 
-        $this->data->device->identifyModel('/Nexian([^\/_]+)/ui', $ua, [
+        $this->device->identifyModel('/Nexian([^\/_]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Nexian'
         ]);
 
-        $this->data->device->identifyModel('/NEC-([^\/_]+)/ui', $ua, [
+        $this->device->identifyModel('/NEC-([^\/_]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'NEC'
         ]);
 
-        $this->data->device->identifyModel('/NGM_([^\/_]+)/ui', $ua, [
+        $this->device->identifyModel('/NGM_([^\/_]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'NGM'
         ]);
 
-        $this->data->device->identifyModel('/OPPO_([^\/_]+)/ui', $ua, [
+        $this->device->identifyModel('/OPPO_([^\/_]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Oppo'
         ]);
 
-        $this->data->device->identifyModel('/Panasonic-([^\/_]+)/ui', $ua, [
+        $this->device->identifyModel('/Panasonic-([^\/_]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Panasonic'
         ]);
 
-        $this->data->device->identifyModel('/Pantech[-_]?([^\/_]+)/ui', $ua, [
+        $this->device->identifyModel('/Pantech[-_]?([^\/_]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Pantech'
         ]);
 
-        $this->data->device->identifyModel('/Philips ?([A-Z]?[0-9@]+[a-z]?)/u', $ua, [
+        $this->device->identifyModel('/Philips ?([A-Z]?[0-9@]+[a-z]?)/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Philips'
         ]);
 
-        $this->data->device->identifyModel('/PHILIPS-([a-zA-Z0-9@]+(?: [0-9]+)?)/u', $ua, [
+        $this->device->identifyModel('/PHILIPS-([a-zA-Z0-9@]+(?: [0-9]+)?)/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Philips',
             'model' => function ($model) {
@@ -574,22 +574,22 @@ trait Mobile
             }
         ]);
 
-        $this->data->device->identifyModel('/SAGEM-([A-Z0-9\-]+)/ui', $ua, [
+        $this->device->identifyModel('/SAGEM-([A-Z0-9\-]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Sagem'
         ]);
 
-        $this->data->device->identifyModel('/Sanyo-([A-Z0-9]+)/ui', $ua, [
+        $this->device->identifyModel('/Sanyo-([A-Z0-9]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Sanyo'
         ]);
 
-        $this->data->device->identifyModel('/sam-([A-Z][0-9]+)/ui', $ua, [
+        $this->device->identifyModel('/sam-([A-Z][0-9]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Samsung'
         ]);
 
-        $this->data->device->identifyModel('/SEC-(SGH[A-Z][0-9]+)/u', $ua, [
+        $this->device->identifyModel('/SEC-(SGH[A-Z][0-9]+)/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Samsung',
             'model' => function ($model) {
@@ -597,42 +597,42 @@ trait Mobile
             }
         ]);
 
-        $this->data->device->identifyModel('/((?:SGH|SCH)-[A-Z][0-9]+)/u', $ua, [
+        $this->device->identifyModel('/((?:SGH|SCH)-[A-Z][0-9]+)/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Samsung'
         ]);
 
-        $this->data->device->identifyModel('/(GT-[A-Z][0-9]+[A-Z]?)/ui', $ua, [
+        $this->device->identifyModel('/(GT-[A-Z][0-9]+[A-Z]?)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Samsung'
         ]);
 
-        $this->data->device->identifyModel('/(?:Siemens |SIE-)([A-Z]+[0-9]+)/ui', $ua, [
+        $this->device->identifyModel('/(?:Siemens |SIE-)([A-Z]+[0-9]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Siemens'
         ]);
 
-        $this->data->device->identifyModel('/SIE-([0-9]{4,4}|[A-Z]{4,4})/ui', $ua, [
+        $this->device->identifyModel('/SIE-([0-9]{4,4}|[A-Z]{4,4})/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Siemens'
         ]);
 
-        $this->data->device->identifyModel('/Sony ([A-Z0-9\-]+)/u', $ua, [
+        $this->device->identifyModel('/Sony ([A-Z0-9\-]+)/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Sony'
         ]);
 
-        $this->data->device->identifyModel('/SE([A-Z][0-9]+[a-z])/u', $ua, [
+        $this->device->identifyModel('/SE([A-Z][0-9]+[a-z])/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Sony Ericsson'
         ]);
 
-        $this->data->device->identifyModel('/sony-ericsson ([A-Z][0-9]+[a-z])/u', $ua, [
+        $this->device->identifyModel('/sony-ericsson ([A-Z][0-9]+[a-z])/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Sony Ericsson'
         ]);
 
-        $this->data->device->identifyModel('/SonyE?ricsson ?([^\/\);]+)/iu', $ua, [
+        $this->device->identifyModel('/SonyE?ricsson ?([^\/\);]+)/iu', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Sony Ericsson',
             'model' => function ($model) {
@@ -648,52 +648,52 @@ trait Mobile
             }
         ]);
 
-        $this->data->device->identifyModel('/SHARP[-_\/]([^\/\;]*)/u', $ua, [
+        $this->device->identifyModel('/SHARP[-_\/]([^\/\;]*)/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Sharp'
         ]);
 
-        $this->data->device->identifyModel('/Spice\s([^\s]+)/ui', $ua, [
+        $this->device->identifyModel('/Spice\s([^\s]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Spice'
         ]);
 
-        $this->data->device->identifyModel('/Spice\s?([A-Z][0-9]+)/ui', $ua, [
+        $this->device->identifyModel('/Spice\s?([A-Z][0-9]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Spice'
         ]);
 
-        $this->data->device->identifyModel('/Tecno([^\/]*)/ui', $ua, [
+        $this->device->identifyModel('/Tecno([^\/]*)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Tecno'
         ]);
 
-        $this->data->device->identifyModel('/T-smart_([^\/]*)/ui', $ua, [
+        $this->device->identifyModel('/T-smart_([^\/]*)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'T-smart'
         ]);
 
-        $this->data->device->identifyModel('/TCL[-_ ]([^\/\;\)]*)/ui', $ua, [
+        $this->device->identifyModel('/TCL[-_ ]([^\/\;\)]*)/ui', $ua, [
             'manufacturer' => 'TCL'
         ]);
 
-        $this->data->device->identifyModel('/Tiphone ([^\/]*)/ui', $ua, [
+        $this->device->identifyModel('/Tiphone ([^\/]*)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'TiPhone'
         ]);
 
-        $this->data->device->identifyModel('/Toshiba[-\/]([^\/-]*)/u', $ua, [
+        $this->device->identifyModel('/Toshiba[-\/]([^\/-]*)/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Toshiba'
         ]);
 
-        $this->data->device->identifyModel('/UTStar(?:com)?-([^\s\.\/;]+)/ui', $ua, [
+        $this->device->identifyModel('/UTStar(?:com)?-([^\s\.\/;]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'UTStarcom'
         ]);
 
 
-        $this->data->device->identifyModel('/vk-(vk[0-9]+)/u', $ua, [
+        $this->device->identifyModel('/vk-(vk[0-9]+)/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'VK Mobile',
             'model' => function ($model) {
@@ -701,47 +701,47 @@ trait Mobile
             }
         ]);
 
-        $this->data->device->identifyModel('/Videocon[-_ \/]([A-Z0-9\.]+)/iu', $ua, [
+        $this->device->identifyModel('/Videocon[-_ \/]([A-Z0-9\.]+)/iu', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Videocon'
         ]);
 
-        $this->data->device->identifyModel('/Vodafone(?:[ _-]Chat)?[ _-]?([0-9]+)/ui', $ua, [
+        $this->device->identifyModel('/Vodafone(?:[ _-]Chat)?[ _-]?([0-9]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Vodafone'
         ]);
 
-        $this->data->device->identifyModel('/Vodafone\/[0-9.]+\/(v[0-9]+)[^\/]*\//u', $ua, [
+        $this->device->identifyModel('/Vodafone\/[0-9.]+\/(v[0-9]+)[^\/]*\//u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Vodafone'
         ]);
 
-        $this->data->device->identifyModel('/^VSUN([0-9]+[A-Z]?)/ui', $ua, [
+        $this->device->identifyModel('/^VSUN([0-9]+[A-Z]?)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Vsun'
         ]);
 
-        $this->data->device->identifyModel('/Wynncom[\-\s]([A-Z0-9\s]+\+?)/ui', $ua, [
+        $this->device->identifyModel('/Wynncom[\-\s]([A-Z0-9\s]+\+?)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Wynncom'
         ]);
 
-        $this->data->device->identifyModel('/^YUANDA([0-9]+[A-Z]?)/ui', $ua, [
+        $this->device->identifyModel('/^YUANDA([0-9]+[A-Z]?)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Yuanda'
         ]);
 
-        $this->data->device->identifyModel('/^ZEN[_\s]([A-Z0-9\s\+]+)\*?[\s_]?($|\/|-|;|Dorado|MAUI|WAP|R2AE|Q03C)/uiU', $ua, [
+        $this->device->identifyModel('/^ZEN[_\s]([A-Z0-9\s\+]+)\*?[\s_]?($|\/|-|;|Dorado|MAUI|WAP|R2AE|Q03C)/uiU', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Zen'
         ]);
 
-        $this->data->device->identifyModel('/^(?:Ziox[_\s])?Ziox[_\s](ZX?[0-9]+)/ui', $ua, [
+        $this->device->identifyModel('/^(?:Ziox[_\s])?Ziox[_\s](ZX?[0-9]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'Ziox'
         ]);
 
-        $this->data->device->identifyModel('/ZTE[-_\s]?([^\s\/\(\);,]+)/ui', $ua, [
+        $this->device->identifyModel('/ZTE[-_\s]?([^\s\/\(\);,]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'manufacturer' => 'ZTE',
             'model' => function ($model) {
@@ -757,11 +757,11 @@ trait Mobile
 
     private function detectJapaneseMobileModels($ua)
     {
-        if (isset($this->data->device->manufacturer)) {
+        if (isset($this->device->manufacturer)) {
             return;
         }
 
-        if ($this->data->os->isFamily('Android')) {
+        if ($this->os->isFamily('Android')) {
             return;
         }
 
@@ -901,17 +901,17 @@ trait Mobile
         }
 
         if (!$falsepositive && !empty($model) && !empty($manufacturer)) {
-            $this->data->device->reset([
+            $this->device->reset([
                 'type' => Constants\DeviceType::MOBILE,
                 'model' => $model,
                 'carrier' => $carrier
             ]);
 
             if (array_key_exists($manufacturer, $ids)) {
-                $this->data->device->manufacturer = $ids[$manufacturer];
+                $this->device->manufacturer = $ids[$manufacturer];
             }
 
-            $this->data->device->identified |= Constants\Id::PATTERN;
+            $this->device->identified |= Constants\Id::PATTERN;
 
             /* Set flags for MOAP */
 
@@ -920,8 +920,8 @@ trait Mobile
                 case 'F07B':
                 case 'F08B':
                 case 'SH07B':
-                    $this->data->os->reset(['family' => new Family(['name' => 'Symbian'])]);
-                    $this->data->device->flag = Constants\Flag::MOAPS;
+                    $this->os->reset(['family' => new Family(['name' => 'Symbian'])]);
+                    $this->device->flag = Constants\Flag::MOAPS;
                     break;
             }
 
@@ -948,17 +948,17 @@ trait Mobile
             $model = $match[1];
             $manufacturer = $match[2];
 
-            $this->data->device->reset([
+            $this->device->reset([
                 'type' => Constants\DeviceType::MOBILE,
                 'model' => $model,
                 'carrier' => 'au'
             ]);
 
             if (array_key_exists($manufacturer, $ids)) {
-                $this->data->device->manufacturer = $ids[$manufacturer];
+                $this->device->manufacturer = $ids[$manufacturer];
             }
 
-            $this->data->device->identified |= Constants\Id::PATTERN;
+            $this->device->identified |= Constants\Id::PATTERN;
             return;
         }
 
@@ -992,24 +992,24 @@ trait Mobile
             }
 
             if (!$falsepositive) {
-                $this->data->device->reset([
+                $this->device->reset([
                     'type' => Constants\DeviceType::MOBILE,
                     'model' => $model,
                     'carrier' => 'au'
                 ]);
 
                 if (array_key_exists($manufacturer, $ids)) {
-                    $this->data->device->manufacturer = $ids[$manufacturer];
+                    $this->device->manufacturer = $ids[$manufacturer];
 
                     $device = Data\DeviceModels::identify('kddi', $model);
                     if ($device->identified) {
-                        $device->identified |= $this->data->device->identified;
+                        $device->identified |= $this->device->identified;
                         $device->carrier = 'au';
-                        $this->data->device = $device;
+                        $this->device = $device;
                     }
                 }
 
-                $this->data->device->identified |= Constants\Id::PATTERN;
+                $this->device->identified |= Constants\Id::PATTERN;
                 return;
             }
         }
@@ -1017,49 +1017,49 @@ trait Mobile
 
         /* Finally identify it based on carrier */
 
-        $this->data->device->identifyModel('/\(([A-Z]+[0-9]+[A-Z])[^;]*; ?FOMA/ui', $ua, [
+        $this->device->identifyModel('/\(([A-Z]+[0-9]+[A-Z])[^;]*; ?FOMA/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'carrier' => 'DoCoMo'
         ]);
 
-        $this->data->device->identifyModel('/\(FOMA ([^;]+)+;/u', $ua, [
+        $this->device->identifyModel('/\(FOMA ([^;]+)+;/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'carrier' => 'DoCoMo'
         ]);
 
-        $this->data->device->identifyModel('/DoCoMo\/[0-9].0[\/\s]([0-9A-Z]+)/ui', $ua, [
+        $this->device->identifyModel('/DoCoMo\/[0-9].0[\/\s]([0-9A-Z]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'carrier' => 'DoCoMo'
         ]);
 
-        $this->data->device->identifyModel('/NTTDoCoMo ([0-9A-Z]+)/ui', $ua, [
+        $this->device->identifyModel('/NTTDoCoMo ([0-9A-Z]+)/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'carrier' => 'DoCoMo'
         ]);
 
-        $this->data->device->identifyModel('/J-PHONE\/[^\/]+\/([^\/_]+)/u', $ua, [
+        $this->device->identifyModel('/J-PHONE\/[^\/]+\/([^\/_]+)/u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'carrier' => 'Softbank'
         ]);
 
-        $this->data->device->identifyModel('/SoftBank\/[^\/]+\/([^\/]+)\//u', $ua, [
+        $this->device->identifyModel('/SoftBank\/[^\/]+\/([^\/]+)\//u', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'carrier' => 'Softbank'
         ]);
 
-        $this->data->device->identifyModel('/Vodafone\/[0-9.]+\/V([0-9]+[A-Z]+)[^\/]*\//ui', $ua, [
+        $this->device->identifyModel('/Vodafone\/[0-9.]+\/V([0-9]+[A-Z]+)[^\/]*\//ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'carrier' => 'Softbank'
         ]);
 
-        $this->data->device->identifyModel('/(KDDI-[^\s\)\.;]{4,})/ui', $ua, [
+        $this->device->identifyModel('/(KDDI-[^\s\)\.;]{4,})/ui', $ua, [
             'type' => Constants\DeviceType::MOBILE,
             'carrier' => 'au'
         ]);
 
 
-        if (!empty($this->data->device->model)) {
-            $this->identifyBasedOnId($this->data->device->model);
+        if (!empty($this->device->model)) {
+            $this->identifyBasedOnId($this->device->model);
         }
     }
 
@@ -1068,7 +1068,7 @@ trait Mobile
 
     private function detectGenericMobileLocations($ua)
     {
-        if ($this->data->device->identified & Constants\Id::PATTERN) {
+        if ($this->device->identified & Constants\Id::PATTERN) {
             return;
         }
 
@@ -1160,7 +1160,7 @@ trait Mobile
         foreach ($candidates as $i => $id) {
             $this->identifyBasedOnIdUsingOs($id);
 
-            if ($this->data->device->identified & Constants\Id::MATCH_UA) {
+            if ($this->device->identified & Constants\Id::MATCH_UA) {
                 return;
             }
         }
@@ -1168,24 +1168,24 @@ trait Mobile
 
     private function identifyBasedOnIdentifier()
     {
-        if ($this->data->device->identified & Constants\Id::MATCH_UA) {
+        if ($this->device->identified & Constants\Id::MATCH_UA) {
             return;
         }
 
         $ids = [];
 
-        if (!empty($this->data->device->identifier)) {
-            $ids[] = $this->data->device->identifier;
+        if (!empty($this->device->identifier)) {
+            $ids[] = $this->device->identifier;
         }
 
-        if (!empty($this->data->device->model)) {
-            $ids[] = $this->data->device->model;
+        if (!empty($this->device->model)) {
+            $ids[] = $this->device->model;
         }
 
         foreach ($ids as $i => $id) {
             $this->identifyBasedOnIdUsingOs($id);
 
-            if ($this->data->device->identified & Constants\Id::MATCH_UA) {
+            if ($this->device->identified & Constants\Id::MATCH_UA) {
                 return;
             }
         }
@@ -1193,7 +1193,7 @@ trait Mobile
         foreach ($ids as $i => $id) {
             $this->identifyBasedOnId($id);
 
-            if ($this->data->device->identified & Constants\Id::MATCH_UA) {
+            if ($this->device->identified & Constants\Id::MATCH_UA) {
                 return;
             }
         }
@@ -1201,28 +1201,28 @@ trait Mobile
 
     private function identifyBasedOnIdUsingOs($id)
     {
-        switch ($this->data->os->getFamily()) {
+        switch ($this->os->getFamily()) {
             case 'Android':
                 $device = Data\DeviceModels::identify('android', $id);
                 if ($device->identified) {
-                    $device->identified |= $this->data->device->identified;
-                    $this->data->device = $device;
+                    $device->identified |= $this->device->identified;
+                    $this->device = $device;
                 }
                 break;
 
             case 'Brew':
                 $device = Data\DeviceModels::identify('brew', $id);
                 if ($device->identified) {
-                    $device->identified |= $this->data->device->identified;
-                    $this->data->device = $device;
+                    $device->identified |= $this->device->identified;
+                    $this->device = $device;
                 }
                 break;
 
             case 'Symbian':
                 $device = Data\DeviceModels::identify('symbian', $id);
                 if ($device->identified) {
-                    $device->identified |= $this->data->device->identified;
-                    $this->data->device = $device;
+                    $device->identified |= $this->device->identified;
+                    $this->device = $device;
                 }
                 break;
 
@@ -1231,11 +1231,11 @@ trait Mobile
             case 'Windows Mobile':
                 $device = Data\DeviceModels::identify('wm', $id);
                 if ($device->identified) {
-                    $device->identified |= $this->data->device->identified;
-                    $this->data->device = $device;
+                    $device->identified |= $this->device->identified;
+                    $this->device = $device;
 
-                    if (!$this->data->isOs('Windows Mobile')) {
-                        $this->data->os->reset([
+                    if (!$this->isOs('Windows Mobile')) {
+                        $this->os->reset([
                             'name' => 'Windows Mobile'
                         ]);
                     }
@@ -1245,8 +1245,8 @@ trait Mobile
             default:
                 $device = Data\DeviceModels::identify('feature', $id);
                 if ($device->identified) {
-                    $device->identified |= $this->data->device->identified;
-                    $this->data->device = $device;
+                    $device->identified |= $this->device->identified;
+                    $this->device = $device;
                 }
                 break;
         }
@@ -1254,65 +1254,65 @@ trait Mobile
 
     private function identifyBasedOnId($id)
     {
-        if ($this->data->device->type != 'mobile') {
+        if ($this->device->type != 'mobile') {
             return;
         }
 
-        if (!($this->data->device->identified & Constants\Id::MATCH_UA)) {
+        if (!($this->device->identified & Constants\Id::MATCH_UA)) {
             $device = Data\DeviceModels::identify('brew', $id);
             if ($device->identified) {
-                $device->identified |= $this->data->device->identified;
-                $this->data->device = $device;
+                $device->identified |= $this->device->identified;
+                $this->device = $device;
 
-                if (!in_array($this->data->os->name, ['Brew', 'Brew MP'])) {
-                    $this->data->os->name = 'Brew';
+                if (!in_array($this->os->name, ['Brew', 'Brew MP'])) {
+                    $this->os->name = 'Brew';
                 }
             }
         }
 
-        if (!($this->data->device->identified & Constants\Id::MATCH_UA)) {
+        if (!($this->device->identified & Constants\Id::MATCH_UA)) {
             $device = Data\DeviceModels::identify('bada', $id);
             if ($device->identified) {
-                $device->identified |= $this->data->device->identified;
-                $this->data->device = $device;
-                $this->data->os->name = 'Bada';
+                $device->identified |= $this->device->identified;
+                $this->device = $device;
+                $this->os->name = 'Bada';
             }
         }
 
-        if (!($this->data->device->identified & Constants\Id::MATCH_UA)) {
+        if (!($this->device->identified & Constants\Id::MATCH_UA)) {
             $device = Data\DeviceModels::identify('touchwiz', $id);
             if ($device->identified) {
-                $device->identified |= $this->data->device->identified;
-                $this->data->device = $device;
-                $this->data->os->name = 'Touchwiz';
+                $device->identified |= $this->device->identified;
+                $this->device = $device;
+                $this->os->name = 'Touchwiz';
             }
         }
 
-        if (!($this->data->device->identified & Constants\Id::MATCH_UA)) {
+        if (!($this->device->identified & Constants\Id::MATCH_UA)) {
             $device = Data\DeviceModels::identify('symbian', $id);
             if ($device->identified) {
-                $device->identified |= $this->data->device->identified;
-                $this->data->device = $device;
-                $this->data->os->reset([
+                $device->identified |= $this->device->identified;
+                $this->device = $device;
+                $this->os->reset([
                     'family' => new Family(['name' => 'Symbian'])
                 ]);
             }
         }
 
-        if (!($this->data->device->identified & Constants\Id::MATCH_UA)) {
+        if (!($this->device->identified & Constants\Id::MATCH_UA)) {
             $device = Data\DeviceModels::identify('wm', $id);
             if ($device->identified) {
-                $device->identified |= $this->data->device->identified;
-                $this->data->device = $device;
-                $this->data->os->name = 'Windows Mobile';
+                $device->identified |= $this->device->identified;
+                $this->device = $device;
+                $this->os->name = 'Windows Mobile';
             }
         }
 
-        if (!($this->data->device->identified & Constants\Id::MATCH_UA)) {
+        if (!($this->device->identified & Constants\Id::MATCH_UA)) {
             $device = Data\DeviceModels::identify('feature', $id);
             if ($device->identified) {
-                $device->identified |= $this->data->device->identified;
-                $this->data->device = $device;
+                $device->identified |= $this->device->identified;
+                $this->device = $device;
             }
         }
     }

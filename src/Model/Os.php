@@ -128,7 +128,7 @@ class Os extends NameVersion
      *
      */
 
-    public function toArray()
+    public function toArray(): array
     {
         $result = [];
 

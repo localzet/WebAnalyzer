@@ -27,43 +27,275 @@ namespace localzet;
 
 use localzet\WebAnalyzer\Analyser;
 use localzet\WebAnalyzer\Cache;
-use localzet\WebAnalyzer\Model\Main;
+use localzet\WebAnalyzer\Model;
 use Psr\Cache\InvalidArgumentException;
 
-class WebAnalyzer extends Main
+class WebAnalyzer
 {
     use Cache;
+    use Analyser\Header,
+        Analyser\Derive,
+        Analyser\Corrections,
+        Analyser\Camouflage,
+        Analyser\Location,
+        Analyser\Network;
 
     /**
-     * Create a new object that contains all the detected information
-     *
-     * @param array|null $headers Optional, an array with all the headers or a string with just the User-Agent header
-     * @param array $options Optional, an array with configuration options
+     * @var Model\Browser $browser Information about the browser
+     */
+    public $browser;
+
+    /**
+     * @var Model\Engine $engine Information about the rendering engine
+     */
+    public $engine;
+
+    /**
+     * @var Model\Os $os Information about the operating system
+     */
+    public $os;
+
+    /**
+     * @var Model\Device $device Information about the device
+     */
+    public $device;
+
+    /**
+     * @var Model\Location $location Information about the location
+     */
+    public $location;
+
+    /**
+     * @var Model\Network $location
+     */
+    public $network;
+
+    /**
+     * @var boolean $camouflage Is the browser camouflaged as another browser
+     */
+    public $camouflage = false;
+
+    /**
+     * @var int[] $features
+     */
+    public $features = [];
+
+    public $options;
+
+    /**
+     * @param array|null $headers
+     * @param array|null $options ['cache', 'cacheExpires', 'detectBots']
      * @throws InvalidArgumentException
      */
-
-    public function __construct(?array $headers = null, array $options = [])
+    public function __construct(?array $headers = null, ?array $options = [])
     {
-        parent::__construct();
-        $this->analyse($headers, $options);
+        $this->browser = new Model\Browser();
+        $this->engine = new Model\Engine();
+        $this->os = new Model\Os();
+        $this->device = new Model\Device();
+        $this->location = new Model\Location();
+        $this->network = new Model\Network();
+
+        if ($headers) {
+            $cache = $this->analyseWithCache($headers, $options);
+
+            if ($cache && $cache->isHit()) {
+                $this->applyCachedData($cache->get());
+            } else {
+                $this->options = (object)$options;
+
+                $this
+                    ->analyseHeaders()
+                    ->analyseLocation()
+                    ->deriveInformation()
+                    ->applyCorrections()
+                    ->detectCamouflage()
+                    ->deriveDeviceSubType();
+
+                if ($cache) {
+                    $this->cache->save(
+                        $cache
+                            ->expiresAfter($this->expires)
+                            ->set($this->retrieveCachedData())
+                    );
+                }
+            }
+        }
     }
 
-    /**
-     * Analyse the provided headers or User-Agent string
-     *
-     * @param array|null $headers An array with all the headers or a string with just the User-Agent header
-     * @param array $options
-     * @throws InvalidArgumentException
-     */
-
-    public function analyse(?array $headers = null, array $options = []): void
+    private function isX()
     {
-        if ($this->analyseWithCache($headers, $options)) {
-            return;
+        $arguments = func_get_args();
+        $x = $arguments[0];
+
+        if (count($arguments) < 2) {
+            return false;
         }
 
-        $analyser = new Analyser($headers, $options);
-        $analyser->setdata($this);
-        $analyser->analyse();
+        if (empty($this->$x->name)) {
+            return false;
+        }
+
+        if ($this->$x->name != $arguments[1]) {
+            return false;
+        }
+
+        if (count($arguments) >= 4) {
+            if (empty($this->$x->version)) {
+                return false;
+            }
+
+            if (!$this->$x->version->is($arguments[2], $arguments[3])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function isBrowser()
+    {
+        $arguments = func_get_args();
+        array_unshift($arguments, 'browser');
+        return call_user_func_array([$this, 'isX'], $arguments);
+    }
+
+    public function isEngine()
+    {
+        $arguments = func_get_args();
+        array_unshift($arguments, 'engine');
+        return call_user_func_array([$this, 'isX'], $arguments);
+    }
+
+    public function isOs()
+    {
+        $arguments = func_get_args();
+        array_unshift($arguments, 'os');
+        return call_user_func_array([$this, 'isX'], $arguments);
+    }
+
+    public function isDevice($model)
+    {
+        return (!empty($this->device->series) && $this->device->series == $model) || (!empty($this->device->model) && $this->device->model == $model);
+    }
+
+    public function getType()
+    {
+        return $this->device->type . (!empty($this->device->subtype) ? ':' . $this->device->subtype : '');
+    }
+
+    public function isType()
+    {
+        $arguments = func_get_args();
+
+        $count = count($arguments);
+        for ($a = 0; $a < $count; $a++) {
+            if (str_contains($arguments[$a], ':')) {
+                list($type, $subtype) = explode(':', $arguments[$a]);
+                if ($type == $this->device->type && $subtype == $this->device->subtype) {
+                    return true;
+                }
+            } else {
+                if ($arguments[$a] == $this->device->type) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public function isMobile()
+    {
+        return $this->isType('mobile', 'tablet', 'ereader', 'media', 'watch', 'camera', 'gaming:portable');
+    }
+
+    public function isDetected()
+    {
+        return $this->browser->isDetected() || $this->os->isDetected() || $this->engine->isDetected() || $this->device->isDetected();
+    }
+
+    public function toString()
+    {
+        $prefix = $this->camouflage ? 'an unknown browser that imitates ' : '';
+        $browser = $this->browser->toString();
+        $os = $this->os->toString();
+        $engine = $this->engine->toString();
+        $device = $this->device->toString();
+
+
+        if (empty($device) && empty($os) && $this->device->type == 'television') {
+            $device = 'television';
+        }
+
+        if (empty($device) && $this->device->type == 'emulator') {
+            $device = 'emulator';
+        }
+
+
+        if (!empty($browser) && !empty($os) && !empty($device)) {
+            return $prefix . $browser . ' on ' . $device . ' running ' . $os;
+        }
+
+        if (!empty($browser) && empty($os) && !empty($device)) {
+            return $prefix . $browser . ' on ' . $device;
+        }
+
+        if (!empty($browser) && !empty($os) && empty($device)) {
+            return $prefix . $browser . ' on ' . $os;
+        }
+
+        if (empty($browser) && !empty($os) && !empty($device)) {
+            return $prefix . $device . ' running ' . $os;
+        }
+
+        if (!empty($browser) && empty($os) && empty($device)) {
+            return $prefix . $browser;
+        }
+
+        if (empty($browser) && empty($os) && !empty($device)) {
+            return $prefix . $device;
+        }
+
+        if ($this->device->type == 'desktop' && !empty($os) && !empty($engine) && empty($device)) {
+            return 'an unknown browser based on ' . $engine . ' running on ' . $os;
+        }
+
+        if ($this->browser->stock && !empty($os) && empty($device)) {
+            return $os;
+        }
+
+        if ($this->browser->stock && !empty($engine) && empty($device)) {
+            return 'an unknown browser based on ' . $engine;
+        }
+
+        if ($this->device->type == 'bot') {
+            return 'an unknown bot';
+        }
+
+        return 'an unknown browser';
+    }
+
+    public function toJavaScript()
+    {
+        return "this.browser = new Browser({ " . $this->browser->toJavaScript() . " });\n" .
+            "this.engine = new Engine({ " . $this->engine->toJavaScript() . " });\n" .
+            "this.os = new Os({ " . $this->os->toJavaScript() . " });\n" .
+            "this.device = new Device({ " . $this->device->toJavaScript() . " });\n" .
+            "this.camouflage = " . ($this->camouflage ? 'true' : 'false') . ";\n" .
+            "this.features = " . json_encode($this->features) . ";\n";
+    }
+
+    public function toArray()
+    {
+        return [
+            'browser' => $this->browser->toArray(),
+            'engine' => $this->engine->toArray(),
+            'os' => $this->os->toArray(),
+            'device' => $this->device->toArray(),
+            'location' => $this->location->toArray(),
+            'network' => $this->network->toArray(),
+            'camouflage' => $this->camouflage,
+        ];
     }
 }

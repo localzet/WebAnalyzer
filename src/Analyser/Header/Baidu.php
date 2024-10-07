@@ -25,16 +25,14 @@
 
 namespace localzet\WebAnalyzer\Analyser\Header;
 
-class Baidu
+trait Baidu
 {
-    public function __construct($header, &$data)
+    public function analyseBaiduHeader($header)
     {
-        $this->data =& $data;
-
-        if (!isset($this->data->browser->name) || $this->data->browser->name != 'Baidu Browser') {
-            $this->data->browser->name = 'Baidu Browser';
-            $this->data->browser->version = null;
-            $this->data->browser->stock = false;
+        if (!isset($this->browser->name) || $this->browser->name != 'Baidu Browser') {
+            $this->browser->name = 'Baidu Browser';
+            $this->browser->version = null;
+            $this->browser->stock = false;
         }
     }
 }

@@ -36,7 +36,7 @@ class Manufacturers
     {
         $name = preg_replace('/^CUS\:/u', '', trim($name));
 
-        require_once __DIR__ . '/../../../data/manufacturer-names.php';
+        require_once __DIR__ . '/../../data/manufacturer-names.php';
 
         if ($type == Constants\DeviceType::TELEVISION) {
             if (isset(Manufacturers::$TELEVISION[$name])) {

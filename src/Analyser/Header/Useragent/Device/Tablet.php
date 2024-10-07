@@ -40,16 +40,16 @@ trait Tablet
     private function detectWebTab($ua)
     {
         if (preg_match('/WeTab-Browser /ui', $ua, $match)) {
-            $this->data->device->manufacturer = 'WeTab';
-            $this->data->device->model = 'WeTab';
-            $this->data->device->identified |= Constants\Id::MATCH_UA;
-            $this->data->device->type = Constants\DeviceType::TABLET;
+            $this->device->manufacturer = 'WeTab';
+            $this->device->model = 'WeTab';
+            $this->device->identified |= Constants\Id::MATCH_UA;
+            $this->device->type = Constants\DeviceType::TABLET;
 
-            $this->data->browser->name = 'WebTab Browser';
-            $this->data->browser->version = null;
+            $this->browser->name = 'WebTab Browser';
+            $this->browser->version = null;
 
-            $this->data->os->name = 'MeeGo';
-            $this->data->os->version = null;
+            $this->os->name = 'MeeGo';
+            $this->os->version = null;
         }
     }
 }

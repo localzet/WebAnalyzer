@@ -38,8 +38,8 @@ trait Signage
         /* BrightSign */
 
         if (preg_match('/BrightSign\/[0-9\.]+(?:-[a-z0-9\-]+)? \(([^\)]+)/u', $ua, $match)) {
-            $this->data->os->reset();
-            $this->data->device->setIdentification([
+            $this->os->reset();
+            $this->device->setIdentification([
                 'manufacturer' => 'BrightSign',
                 'model' => $match[1],
                 'type' => Constants\DeviceType::SIGNAGE
@@ -50,11 +50,11 @@ trait Signage
         /* Iadea */
 
         if (preg_match('/ADAPI/u', $ua) && preg_match('/\(MODEL:([^\)]+)\)/u', $ua, $match)) {
-            if (!$this->data->isOs('Android')) {
-                $this->data->os->reset();
+            if (!$this->isOs('Android')) {
+                $this->os->reset();
             }
 
-            $this->data->device->setIdentification([
+            $this->device->setIdentification([
                 'manufacturer' => 'IAdea',
                 'model' => $match[1],
                 'type' => Constants\DeviceType::SIGNAGE

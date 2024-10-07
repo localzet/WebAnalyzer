@@ -65,12 +65,12 @@ trait Using
         $count = count($items);
         for ($i = 0; $i < $count; $i++) {
             if (preg_match($items[$i]['regexp'], $ua, $match)) {
-                $this->data->browser->using = new \localzet\WebAnalyzer\Model\Using([
+                $this->browser->using = new \localzet\WebAnalyzer\Model\Using([
                     'name' => $items[$i]['name']
                 ]);
 
                 if (isset($match[1]) && $match[1]) {
-                    $this->data->browser->using->version = new Version(['value' => $match[1], 'details' => $items[$i]['details'] ?? null]);
+                    $this->browser->using->version = new Version(['value' => $match[1], 'details' => $items[$i]['details'] ?? null]);
                 }
 
                 break;

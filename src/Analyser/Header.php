@@ -30,6 +30,15 @@ use localzet\WebAnalyzer\Constants;
 
 trait Header
 {
+    use Header\Useragent,
+        Header\Baidu,
+        Header\OperaMini,
+        Header\BrowserId,
+        Header\Puffin,
+        Header\UCBrowserNew,
+        Header\UCBrowserOld,
+        Header\Wap;
+
     private function &analyseHeaders()
     {
         /* Analyse the main useragent header */
@@ -101,63 +110,20 @@ trait Header
         return $this;
     }
 
-
-    private function analyseUserAgent($header)
-    {
-        new Header\Useragent($header, $this->data, $this->options);
-    }
-
-    private function analyseBaiduHeader($header)
-    {
-        new Header\Baidu($header, $this->data);
-    }
-
-    private function analyseOperaMiniPhone($header)
-    {
-        new Header\OperaMini($header, $this->data);
-    }
-
-    private function analyseBrowserId($header)
-    {
-        new Header\BrowserId($header, $this->data);
-    }
-
-    private function analysePuffinUserAgent($header)
-    {
-        new Header\Puffin($header, $this->data);
-    }
-
-    private function analyseNewUCUserAgent($header)
-    {
-        new Header\UCBrowserNew($header, $this->data);
-    }
-
-    private function analyseOldUCUserAgent($header)
-    {
-        new Header\UCBrowserOld($header, $this->data);
-    }
-
-    private function analyseWapProfile($header)
-    {
-        new Header\Wap($header, $this->data);
-    }
-
-
     private function additionalUserAgent($ua)
     {
-        $extra = new WebAnalyzer($ua);
+        $extra = new WebAnalyzer(['user-agent' => $ua]);
 
         if ($extra->device->type != Constants\DeviceType::DESKTOP) {
             if (isset($extra->os->name)) {
-                $this->data->os = $extra->os;
+                $this->os = $extra->os;
             }
 
             if ($extra->device->identified) {
-                $this->data->device = $extra->device;
+                $this->device = $extra->device;
             }
         }
     }
-
 
     private function getHeader($h)
     {

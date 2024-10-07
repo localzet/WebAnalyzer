@@ -39,69 +39,15 @@ trait Location
             $this->headers['remote-addr'] ??
             $this->headers['via'] ?? null;
 
-
         if (filter_var($ip, FILTER_VALIDATE_IP)) {
-            $this->analyseCity($ip);
-            $this->analyseCountry($ip);
-            $this->analyseASN($ip);
+            try {
+                $GeoLite2_City = new Reader(__DIR__ . '/../../data/GeoLite2-City.mmdb', ['ru', 'en']);
+                $this->location = (object) $GeoLite2_City->city($ip)->jsonSerialize() ?? null;
+            } catch (Throwable) {
+                /* :) */
+            }
         }
 
         return $this;
-    }
-
-    private function analyseCity($ip)
-    {
-        try {
-            $GeoLite2_City = new Reader(__DIR__ . '/../../data/GeoLite2-City.mmdb', ['ru', 'en']);
-            $city = $GeoLite2_City->city($ip);
-
-            $this->data->location->city = $city->city->name ?? null;
-
-            $this->data->location->latitude = $city->location->latitude ?? null;
-            $this->data->location->longitude = $city->location->longitude ?? null;
-
-            $this->data->location->timezone = $city->location->timeZone ?? null;
-            $this->data->location->subdivision = $city->mostSpecificSubdivision->name ?? null;
-
-            foreach ($city->subdivisions ?? [] as $subdivision) {
-                $this->data->location->subdivisions[] = $subdivision?->jsonSerialize();
-            }
-
-            $this->data->location->city_traits = $city->traits->jsonSerialize() ?? null;
-        } catch (Throwable) {
-            /* :) */
-        }
-    }
-
-    private function analyseCountry($ip)
-    {
-        try {
-            $GeoLite2_Country = new Reader(__DIR__ . '/../../data/GeoLite2-Country.mmdb', ['ru', 'en']);
-            $country = $GeoLite2_Country->country($ip);
-
-            $this->data->location->continent = $country->continent->name ?? null;
-            $this->data->location->continent_code = $country->continent->code ?? null;
-
-            $this->data->location->country = $country->country->name ?? null;
-            $this->data->location->country_code = $country->country->isoCode ?? null;
-
-            $this->data->location->country_traits = $country->traits->jsonSerialize() ?? null;
-        } catch (Throwable) {
-            /* :) */
-        }
-    }
-
-    private function analyseASN($ip)
-    {
-        try {
-            $GeoLite2_ASN = new Reader(__DIR__ . '/../../data/GeoLite2-ASN.mmdb', ['ru', 'en']);
-            $asn = $GeoLite2_ASN->asn($ip);
-
-            $this->data->location->asn = $asn->autonomousSystemNumber ?? null;
-            $this->data->location->aso = $asn->autonomousSystemOrganization ?? null;
-            $this->data->location->network = $asn->network ?? null;
-        } catch (Throwable) {
-            /* :) */
-        }
     }
 }

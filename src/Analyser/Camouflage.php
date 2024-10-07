@@ -59,49 +59,49 @@ trait Camouflage
     private function &detectCamouflagedAndroidBrowser($ua)
     {
         if (preg_match('/Mac OS X 10_6_3; ([^;]+); [a-z]{2}(?:-[a-z]{2})?\)/u', $ua, $match)) {
-            $this->data->browser->name = 'Android Browser';
-            $this->data->browser->version = null;
-            $this->data->browser->mode = 'desktop';
+            $this->browser->name = 'Android Browser';
+            $this->browser->version = null;
+            $this->browser->mode = 'desktop';
 
-            $this->data->os->name = 'Android';
-            $this->data->os->alias = null;
-            $this->data->os->version = null;
+            $this->os->name = 'Android';
+            $this->os->alias = null;
+            $this->os->version = null;
 
-            $this->data->engine->name = 'Webkit';
-            $this->data->engine->version = null;
+            $this->engine->name = 'Webkit';
+            $this->engine->version = null;
 
-            $this->data->device->type = 'mobile';
+            $this->device->type = 'mobile';
 
             $device = Data\DeviceModels::identify('android', $match[1]);
             if ($device->identified) {
-                $device->identified |= $this->data->device->identified;
-                $this->data->device = $device;
+                $device->identified |= $this->device->identified;
+                $this->device = $device;
             }
 
-            $this->data->features[] = 'foundDevice';
+            $this->features[] = 'foundDevice';
         }
 
         if (preg_match('/Mac OS X 10_5_7; [^\/\);]+\/([^\/\);]+)\//u', $ua, $match)) {
-            $this->data->browser->name = 'Android Browser';
-            $this->data->browser->version = null;
-            $this->data->browser->mode = 'desktop';
+            $this->browser->name = 'Android Browser';
+            $this->browser->version = null;
+            $this->browser->mode = 'desktop';
 
-            $this->data->os->name = 'Android';
-            $this->data->os->alias = null;
-            $this->data->os->version = null;
+            $this->os->name = 'Android';
+            $this->os->alias = null;
+            $this->os->version = null;
 
-            $this->data->engine->name = 'Webkit';
-            $this->data->engine->version = null;
+            $this->engine->name = 'Webkit';
+            $this->engine->version = null;
 
-            $this->data->device->type = 'mobile';
+            $this->device->type = 'mobile';
 
             $device = Data\DeviceModels::identify('android', $match[1]);
             if ($device->identified) {
-                $device->identified |= $this->data->device->identified;
-                $this->data->device = $device;
+                $device->identified |= $this->device->identified;
+                $this->device = $device;
             }
 
-            $this->data->features[] = 'foundDevice';
+            $this->features[] = 'foundDevice';
         }
 
         return $this;
@@ -110,15 +110,15 @@ trait Camouflage
     private function &detectCamouflagedAndroidAsusBrowser($ua)
     {
         if (preg_match('/Linux Ventana; [a-z]{2}(?:-[a-z]{2})?; (.+) Build/u', $ua, $match)) {
-            $this->data->browser->name = 'Android Browser';
-            $this->data->browser->version = null;
-            $this->data->browser->channel = null;
-            $this->data->browser->mode = 'desktop';
+            $this->browser->name = 'Android Browser';
+            $this->browser->version = null;
+            $this->browser->channel = null;
+            $this->browser->mode = 'desktop';
 
-            $this->data->engine->name = 'Webkit';
-            $this->data->engine->version = null;
+            $this->engine->name = 'Webkit';
+            $this->engine->version = null;
 
-            $this->data->features[] = 'foundDevice';
+            $this->features[] = 'foundDevice';
         }
 
         return $this;
@@ -126,15 +126,15 @@ trait Camouflage
 
     private function &detectCamouflagedAsSafari($ua)
     {
-        if ($this->data->isBrowser('Safari') && !preg_match('/Darwin/u', $ua)) {
-            if ($this->data->isOs('iOS') && !preg_match('/^Mozilla/u', $ua)) {
-                $this->data->features[] = 'noMozillaPrefix';
-                $this->data->camouflage = true;
+        if ($this->isBrowser('Safari') && !preg_match('/Darwin/u', $ua)) {
+            if ($this->isOs('iOS') && !preg_match('/^Mozilla/u', $ua)) {
+                $this->features[] = 'noMozillaPrefix';
+                $this->camouflage = true;
             }
 
             if (!preg_match('/Version\/[0-9\.]+/u', $ua)) {
-                $this->data->features[] = 'noVersion';
-                $this->data->camouflage = true;
+                $this->features[] = 'noVersion';
+                $this->camouflage = true;
             }
         }
 
@@ -143,12 +143,12 @@ trait Camouflage
 
     private function &detectCamouflagedAsChrome($ua)
     {
-        if ($this->data->isBrowser('Chrome')) {
+        if ($this->isBrowser('Chrome')) {
             if (preg_match('/(?:Chrome|CrMo|CriOS)\//u', $ua)
                 && !preg_match('/(?:Chrome|CrMo|CriOS)\/([0-9]{1,3}\.[0-9]\.(0\.0|[0-9]{3,4}\.[0-9]+))/u', $ua)
             ) {
-                $this->data->features[] = 'wrongVersion';
-                $this->data->camouflage = true;
+                $this->features[] = 'wrongVersion';
+                $this->camouflage = true;
             }
         }
 
@@ -158,27 +158,27 @@ trait Camouflage
     private function &detectCamouflagedUCBrowser($ua)
     {
         if ($ua == 'Mozilla/5.0 (X11; U; Linux i686; zh-CN; rv:1.2.3.4) Gecko/') {
-            if (!$this->data->isBrowser('UC Browser')) {
-                $this->data->browser->name = 'UC Browser';
-                $this->data->browser->version = null;
-                $this->data->browser->stock = false;
+            if (!$this->isBrowser('UC Browser')) {
+                $this->browser->name = 'UC Browser';
+                $this->browser->version = null;
+                $this->browser->stock = false;
             }
 
-            if ($this->data->isOs('Windows')) {
-                $this->data->os->reset();
+            if ($this->isOs('Windows')) {
+                $this->os->reset();
             }
 
-            $this->data->engine->reset(['name' => 'Gecko']);
-            $this->data->device->type = 'mobile';
+            $this->engine->reset(['name' => 'Gecko']);
+            $this->device->type = 'mobile';
         }
 
-        if ($this->data->isBrowser('Chrome')) {
+        if ($this->isBrowser('Chrome')) {
             if (preg_match('/UBrowser\/?([0-9.]*)/u', $ua, $match)) {
-                $this->data->browser->stock = false;
-                $this->data->browser->name = 'UC Browser';
-                $this->data->browser->version = new Version(['value' => $match[1], 'details' => 2]);
-                $this->data->browser->type = Constants\BrowserType::BROWSER;
-                unset($this->data->browser->channel);
+                $this->browser->stock = false;
+                $this->browser->name = 'UC Browser';
+                $this->browser->version = new Version(['value' => $match[1], 'details' => 2]);
+                $this->browser->type = Constants\BrowserType::BROWSER;
+                unset($this->browser->channel);
             }
         }
 
@@ -187,95 +187,95 @@ trait Camouflage
 
     private function &detectCamouflagedBasedOnEngines()
     {
-        if (isset($this->data->engine->name) && $this->data->browser->mode != 'proxy') {
+        if (isset($this->engine->name) && $this->browser->mode != 'proxy') {
             /* If it claims not to be Trident, but it is probably Trident running camouflage mode */
             if ($this->options->engine & Constants\EngineType::TRIDENT) {
-                $this->data->features[] = 'trident';
+                $this->features[] = 'trident';
 
-                if ($this->data->engine->name && $this->data->engine->name != 'Trident') {
-                    $this->data->camouflage = !isset($this->data->browser->name) || ($this->data->browser->name != 'Maxthon' && $this->data->browser->name != 'Motorola WebKit');
+                if ($this->engine->name && $this->engine->name != 'Trident') {
+                    $this->camouflage = !isset($this->browser->name) || ($this->browser->name != 'Maxthon' && $this->browser->name != 'Motorola WebKit');
                 }
             }
 
             /* If it claims not to be Opera, but it is probably Opera running camouflage mode */
             if ($this->options->engine & Constants\EngineType::PRESTO) {
-                $this->data->features[] = 'presto';
+                $this->features[] = 'presto';
 
-                if ($this->data->engine->name && $this->data->engine->name != 'Presto') {
-                    $this->data->camouflage = true;
+                if ($this->engine->name && $this->engine->name != 'Presto') {
+                    $this->camouflage = true;
                 }
 
-                if (isset($this->data->browser->name) && $this->data->browser->name == 'Internet Explorer') {
-                    $this->data->camouflage = true;
+                if (isset($this->browser->name) && $this->browser->name == 'Internet Explorer') {
+                    $this->camouflage = true;
                 }
             }
 
             /* If it claims not to be Gecko, but it is probably Gecko running camouflage mode */
             if ($this->options->engine & Constants\EngineType::GECKO) {
-                $this->data->features[] = 'gecko';
+                $this->features[] = 'gecko';
 
-                if ($this->data->engine->name && $this->data->engine->name != 'Gecko') {
-                    $this->data->camouflage = true;
+                if ($this->engine->name && $this->engine->name != 'Gecko') {
+                    $this->camouflage = true;
                 }
 
-                if (isset($this->data->browser->name) && $this->data->browser->name == 'Internet Explorer') {
-                    $this->data->camouflage = true;
+                if (isset($this->browser->name) && $this->browser->name == 'Internet Explorer') {
+                    $this->camouflage = true;
                 }
             }
 
             /* If it claims not to be Webkit, but it is probably Webkit running camouflage mode */
             if ($this->options->engine & Constants\EngineType::WEBKIT) {
-                $this->data->features[] = 'webkit';
+                $this->features[] = 'webkit';
 
-                if ($this->data->engine->name && ($this->data->engine->name != 'Blink' && $this->data->engine->name != 'Webkit')) {
-                    $this->data->camouflage = true;
+                if ($this->engine->name && ($this->engine->name != 'Blink' && $this->engine->name != 'Webkit')) {
+                    $this->camouflage = true;
                 }
 
-                if (isset($this->data->browser->name) && $this->data->browser->name == 'Internet Explorer') {
-                    $this->data->camouflage = true;
+                if (isset($this->browser->name) && $this->browser->name == 'Internet Explorer') {
+                    $this->camouflage = true;
                 }
 
                 /* IE 11 on mobile now supports Webkit APIs */
-                if (isset($this->data->browser->name) && $this->data->browser->name == 'Mobile Internet Explorer'
-                    && isset($this->data->browser->version) && $this->data->browser->version->toFloat() >= 11
-                    && isset($this->data->os->name) && $this->data->os->name == 'Windows Phone'
+                if (isset($this->browser->name) && $this->browser->name == 'Mobile Internet Explorer'
+                    && isset($this->browser->version) && $this->browser->version->toFloat() >= 11
+                    && isset($this->os->name) && $this->os->name == 'Windows Phone'
                 ) {
-                    $this->data->camouflage = false;
+                    $this->camouflage = false;
                 }
 
                 /* IE 11 Developer Preview now supports  Webkit APIs */
-                if (isset($this->data->browser->name) && $this->data->browser->name == 'Internet Explorer'
-                    && isset($this->data->browser->version) && $this->data->browser->version->toFloat() >= 11
-                    && isset($this->data->os->name) && $this->data->os->name == 'Windows'
+                if (isset($this->browser->name) && $this->browser->name == 'Internet Explorer'
+                    && isset($this->browser->version) && $this->browser->version->toFloat() >= 11
+                    && isset($this->os->name) && $this->os->name == 'Windows'
                 ) {
-                    $this->data->camouflage = false;
+                    $this->camouflage = false;
                 }
 
                 /* EdgeHTML rendering engine also appears to be WebKit */
-                if (isset($this->data->engine->name) && $this->data->engine->name == 'EdgeHTML') {
-                    $this->data->camouflage = false;
+                if (isset($this->engine->name) && $this->engine->name == 'EdgeHTML') {
+                    $this->camouflage = false;
                 }
 
                 /* Firefox 48+ support certain Webkit features */
                 if ($this->options->engine & Constants\EngineType::GECKO) {
-                    $this->data->camouflage = false;
+                    $this->camouflage = false;
                 }
             }
 
             if ($this->options->engine & Constants\EngineType::CHROMIUM) {
-                $this->data->features[] = 'chrome';
+                $this->features[] = 'chrome';
 
-                if ($this->data->engine->name && ($this->data->engine->name != 'EdgeHTML' && $this->data->engine->name != 'Blink' && $this->data->engine->name != 'Webkit')) {
-                    $this->data->camouflage = true;
+                if ($this->engine->name && ($this->engine->name != 'EdgeHTML' && $this->engine->name != 'Blink' && $this->engine->name != 'Webkit')) {
+                    $this->camouflage = true;
                 }
             }
 
             /* If it claims to be Safari and uses V8, it is probably an Android device running camouflage mode */
-            if ($this->data->engine->name == 'Webkit' && $this->options->engine & Constants\EngineType::V8) {
-                $this->data->features[] = 'v8';
+            if ($this->engine->name == 'Webkit' && $this->options->engine & Constants\EngineType::V8) {
+                $this->features[] = 'v8';
 
-                if (isset($this->data->browser->name) && $this->data->browser->name == 'Safari') {
-                    $this->data->camouflage = true;
+                if (isset($this->browser->name) && $this->browser->name == 'Safari') {
+                    $this->camouflage = true;
                 }
             }
         }
@@ -285,43 +285,43 @@ trait Camouflage
 
     private function &detectCamouflagedBasedOnFeatures()
     {
-        if (isset($this->data->browser->name) && isset($this->data->os->name)) {
-            if ($this->data->os->name == 'iOS' && $this->data->browser->name != 'Opera Mini' && $this->data->browser->name != 'UC Browser' && isset($this->data->os->version)) {
-                if ($this->data->os->version->toFloat() < 4.0 && $this->options->features & Constants\Feature::SANDBOX) {
-                    $this->data->features[] = 'foundSandbox';
-                    $this->data->camouflage = true;
+        if (isset($this->browser->name) && isset($this->os->name)) {
+            if ($this->os->name == 'iOS' && $this->browser->name != 'Opera Mini' && $this->browser->name != 'UC Browser' && isset($this->os->version)) {
+                if ($this->os->version->toFloat() < 4.0 && $this->options->features & Constants\Feature::SANDBOX) {
+                    $this->features[] = 'foundSandbox';
+                    $this->camouflage = true;
                 }
 
-                if ($this->data->os->version->toFloat() < 4.2 && $this->options->features & Constants\Feature::WEBSOCKET) {
-                    $this->data->features[] = 'foundSockets';
-                    $this->data->camouflage = true;
+                if ($this->os->version->toFloat() < 4.2 && $this->options->features & Constants\Feature::WEBSOCKET) {
+                    $this->features[] = 'foundSockets';
+                    $this->camouflage = true;
                 }
 
-                if ($this->data->os->version->toFloat() < 5.0 && $this->options->features & Constants\Feature::WORKER) {
-                    $this->data->features[] = 'foundWorker';
-                    $this->data->camouflage = true;
+                if ($this->os->version->toFloat() < 5.0 && $this->options->features & Constants\Feature::WORKER) {
+                    $this->features[] = 'foundWorker';
+                    $this->camouflage = true;
                 }
             }
 
-            if ($this->data->os->name != 'iOS' && $this->data->browser->name == 'Safari' && isset($this->data->browser->version)) {
-                if ($this->data->browser->version->toFloat() < 4.0 && $this->options->features & Constants\Feature::APPCACHE) {
-                    $this->data->features[] = 'foundAppCache';
-                    $this->data->camouflage = true;
+            if ($this->os->name != 'iOS' && $this->browser->name == 'Safari' && isset($this->browser->version)) {
+                if ($this->browser->version->toFloat() < 4.0 && $this->options->features & Constants\Feature::APPCACHE) {
+                    $this->features[] = 'foundAppCache';
+                    $this->camouflage = true;
                 }
 
-                if ($this->data->browser->version->toFloat() < 4.1 && $this->options->features & Constants\Feature::HISTORY) {
-                    $this->data->features[] = 'foundHistory';
-                    $this->data->camouflage = true;
+                if ($this->browser->version->toFloat() < 4.1 && $this->options->features & Constants\Feature::HISTORY) {
+                    $this->features[] = 'foundHistory';
+                    $this->camouflage = true;
                 }
 
-                if ($this->data->browser->version->toFloat() < 5.1 && $this->options->features & Constants\Feature::FULLSCREEN) {
-                    $this->data->features[] = 'foundFullscreen';
-                    $this->data->camouflage = true;
+                if ($this->browser->version->toFloat() < 5.1 && $this->options->features & Constants\Feature::FULLSCREEN) {
+                    $this->features[] = 'foundFullscreen';
+                    $this->camouflage = true;
                 }
 
-                if ($this->data->browser->version->toFloat() < 5.2 && $this->options->features & Constants\Feature::FILEREADER) {
-                    $this->data->features[] = 'foundFileReader';
-                    $this->data->camouflage = true;
+                if ($this->browser->version->toFloat() < 5.2 && $this->options->features & Constants\Feature::FILEREADER) {
+                    $this->features[] = 'foundFileReader';
+                    $this->camouflage = true;
                 }
             }
         }

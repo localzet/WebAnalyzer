@@ -32,7 +32,7 @@ class Darwin
 
     public static function getVersion($platform, $version)
     {
-        require_once __DIR__ . '/../../../data/os-darwin.php';
+        require_once __DIR__ . '/../../data/os-darwin.php';
 
         $version = implode('.', array_slice(explode('.', $version), 0, 3));
 

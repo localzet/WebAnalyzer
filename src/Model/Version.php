@@ -291,7 +291,7 @@ class Version extends Base
      *
      */
 
-    public function toArray()
+    public function toArray(): array
     {
         $result = [];
 
