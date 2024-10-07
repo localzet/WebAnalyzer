@@ -312,10 +312,6 @@ class Version extends Base
             $result['nickname'] = $this->nickname;
         }
 
-        if (isset($result['value']) && !isset($result['alias']) && !isset($result['nickname'])) {
-            return $result['value'];
-        }
-
         return $result;
     }
 }
