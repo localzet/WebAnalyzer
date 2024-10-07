@@ -112,6 +112,7 @@ class WebAnalyzer
             if ($cache && $cache->isHit()) {
                 $this->applyCachedData($cache->get());
             } else {
+                $this->headers = $headers;
                 $this->options = (object)$options;
 
                 $this
