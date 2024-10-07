@@ -27,7 +27,7 @@ include_once __DIR__ . '/bootstrap.php';
 
 echo "Downloading...";
 
-$profiles = json_decode(file_get_contents("https://cloud.zorin.space/resources/profiles.json"));
+$profiles = json_decode(file_get_contents("https://zorin.cloud/wa/profiles.json"));
 
 $total = count($profiles);
 
