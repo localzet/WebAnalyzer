@@ -52,7 +52,7 @@ trait Location
     private function analyseCity($ip)
     {
         try {
-            $GeoLite2_City = new Reader(__DIR__ . '/../data/GeoLite2-City.mmdb', ['ru', 'en']);
+            $GeoLite2_City = new Reader(__DIR__ . '/../../data/GeoLite2-City.mmdb', ['ru', 'en']);
             $city = $GeoLite2_City->city($ip);
 
             $this->data->location->city = $city->city->name ?? null;
@@ -76,7 +76,7 @@ trait Location
     private function analyseCountry($ip)
     {
         try {
-            $GeoLite2_Country = new Reader(__DIR__ . '/../data/GeoLite2-Country.mmdb', ['ru', 'en']);
+            $GeoLite2_Country = new Reader(__DIR__ . '/../../data/GeoLite2-Country.mmdb', ['ru', 'en']);
             $country = $GeoLite2_Country->country($ip);
 
             $this->data->location->continent = $country->continent->name ?? null;
@@ -94,7 +94,7 @@ trait Location
     private function analyseASN($ip)
     {
         try {
-            $GeoLite2_ASN = new Reader(__DIR__ . '/../data/GeoLite2-ASN.mmdb', ['ru', 'en']);
+            $GeoLite2_ASN = new Reader(__DIR__ . '/../../data/GeoLite2-ASN.mmdb', ['ru', 'en']);
             $asn = $GeoLite2_ASN->asn($ip);
 
             $this->data->location->asn = $asn->autonomousSystemNumber ?? null;

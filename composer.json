@@ -31,7 +31,8 @@
   },
   "autoload": {
     "psr-4": {
-      "localzet\\": "src"
+      "localzet\\WebAnalyzer\\": "src",
+      "localzet\\": ""
     }
   },
   "require": {
