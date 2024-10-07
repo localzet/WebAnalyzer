@@ -42,7 +42,11 @@ trait Network
         if (filter_var($ip, FILTER_VALIDATE_IP)) {
             try {
                 $GeoLite2_ASN = new Reader(__DIR__ . '/../../data/GeoLite2-ASN.mmdb', ['ru', 'en']);
-                $this->network = (object)$GeoLite2_ASN->asn($ip)->jsonSerialize() ?? null;
+                $asn = $GeoLite2_ASN->asn($ip) ?? null;
+                $this->network->number = $asn->autonomousSystemNumber ?? null;
+                $this->network->organization = $asn->autonomousSystemOrganization ?? null;
+                $this->network->address = $asn->ipAddress ?? null;
+                $this->network->subnet = $asn->network ?? null;
             } catch (Throwable) {
                 /* :) */
             }

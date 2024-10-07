@@ -27,7 +27,17 @@ namespace localzet\WebAnalyzer\Model;
 
 use localzet\WebAnalyzer\Model\Primitive\Base;
 
-#[\AllowDynamicProperties]
 class Location extends Base
 {
+    public ?string $city = null;
+    public ?string $continent = null;
+    public ?string $continent_code = null;
+    public ?string $country = null;
+    public ?string $country_code = null;
+    public ?int $accuracy_radius = null;
+    public ?float $latitude = null;
+    public ?float $longitude = null;
+    public ?string $time_zone = null;
+    public ?string $postal_code = null;
+    public ?array $subdivisions = [];
 }

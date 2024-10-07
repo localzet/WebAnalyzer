@@ -42,7 +42,25 @@ trait Location
         if (filter_var($ip, FILTER_VALIDATE_IP)) {
             try {
                 $GeoLite2_City = new Reader(__DIR__ . '/../../data/GeoLite2-City.mmdb', ['ru', 'en']);
-                $this->location = (object) $GeoLite2_City->city($ip)->jsonSerialize() ?? null;
+                $location = $GeoLite2_City->city($ip) ?? null;
+
+                $this->location->city = $location->city?->name ?? null;
+                $this->location->continent = $location->continent?->name ?? null;
+                $this->location->continent_code = $location->continent?->code ?? null;
+                $this->location->country = $location->country?->name ?? null;
+                $this->location->country_code = $location->country?->isoCode ?? null;
+                $this->location->accuracy_radius = $location->location->accuracyRadius ?? null;
+                $this->location->latitude = $location->location->latitude ?? null;
+                $this->location->longitude = $location->location->longitude ?? null;
+                $this->location->time_zone = $location->location->timeZone ?? null;
+                $this->location->postal_code = $location->postal?->code ?? null;
+
+                foreach ($location->subdivisions ?? [] as $subdivision) {
+                    $this->location->subdivisions[] = (object)[
+                        'name' => $subdivision->name ?? null,
+                        'code' => $subdivision->isoCode ?? null,
+                    ];
+                }
             } catch (Throwable) {
                 /* :) */
             }

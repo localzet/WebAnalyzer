@@ -27,7 +27,10 @@ namespace localzet\WebAnalyzer\Model;
 
 use localzet\WebAnalyzer\Model\Primitive\Base;
 
-#[\AllowDynamicProperties]
 class Network extends Base
 {
+    public ?int $number = null;
+    public ?string $organization = null;
+    public ?string $address = null;
+    public ?string $subnet = null;
 }
