@@ -41,53 +41,60 @@ class WebAnalyzer
         Analyser\Network;
 
     /**
-     * @var Model\Browser $browser Information about the browser
+     * @var Model\Browser $browser Информация о браузере
      */
-    public $browser;
+    public Model\Browser $browser;
 
     /**
-     * @var Model\Engine $engine Information about the rendering engine
+     * @var Model\Engine $engine Информация о движке рендеринга
      */
-    public $engine;
+    public Model\Engine $engine;
 
     /**
-     * @var Model\Os $os Information about the operating system
+     * @var Model\Os $os Информация об операционной системе
      */
-    public $os;
+    public Model\Os $os;
 
     /**
-     * @var Model\Device $device Information about the device
+     * @var Model\Device $device Информация об устройстве
      */
-    public $device;
+    public Model\Device $device;
 
     /**
-     * @var Model\Location $location Information about the location
+     * @var Model\Location $location Информация о местоположении
      */
-    public $location;
+    public Model\Location $location;
 
     /**
-     * @var Model\Network $location
+     * @var Model\Network $network Информация о сети
      */
-    public $network;
+    public Model\Network $network;
 
     /**
-     * @var boolean $camouflage Is the browser camouflaged as another browser
+     * @var bool $camouflage Является ли браузер замаскированным под другой браузер
      */
-    public $camouflage = false;
+    public bool $camouflage = false;
 
     /**
-     * @var int[] $features
+     * @var int[] $features Массив функций
      */
-    public $features = [];
-
-    public $options;
-
-    private $headers = [];
-
+    public array $features = [];
 
     /**
-     * @param array|null $headers
-     * @param array|null $options ['cache', 'cacheExpires', 'detectBots']
+     * @var object $options Опции анализа
+     */
+    public object $options;
+
+    /**
+     * @var array $headers Заголовки HTTP
+     */
+    private array $headers = [];
+
+    /**
+     * Конструктор класса WebAnalyzer
+     *
+     * @param array|null $headers Заголовки для анализа
+     * @param array|null $options Опции ['cache', 'cacheExpires', 'detectBots']
      * @throws InvalidArgumentException
      */
     public function __construct(?array $headers = null, ?array $options = [])
@@ -218,7 +225,7 @@ class WebAnalyzer
         return $this->browser->isDetected() || $this->os->isDetected() || $this->engine->isDetected() || $this->device->isDetected();
     }
 
-    public function toString()
+    public function toString(): string
     {
         $prefix = $this->camouflage ? 'an unknown browser that imitates ' : '';
         $browser = $this->browser->toString();
@@ -279,7 +286,7 @@ class WebAnalyzer
         return 'an unknown browser';
     }
 
-    public function toJavaScript()
+    public function toJavaScript(): string
     {
         return "this.browser = new Browser({ " . $this->browser->toJavaScript() . " });\n" .
             "this.engine = new Engine({ " . $this->engine->toJavaScript() . " });\n" .
@@ -289,7 +296,7 @@ class WebAnalyzer
             "this.features = " . json_encode($this->features) . ";\n";
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'browser' => $this->browser->toArray(),
