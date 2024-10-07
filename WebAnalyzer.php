@@ -82,6 +82,9 @@ class WebAnalyzer
 
     public $options;
 
+    private $headers = [];
+
+
     /**
      * @param array|null $headers
      * @param array|null $options ['cache', 'cacheExpires', 'detectBots']
